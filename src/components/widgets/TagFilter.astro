@@ -1,5 +1,5 @@
 ---
-const tags = ['책', '일·성장', '생각', '100일글쓰기'] as const
+const tags = ['서평', '독서·글쓰기', '일·성장', 'Tech', '생각', '100일글쓰기'] as const
 ---
 
 <div class="tag-filter">
@@ -13,8 +13,10 @@ const tags = ['책', '일·성장', '생각', '100일글쓰기'] as const
 
 <script>
   const TAG_MAP: Record<string, string[]> = {
-    '책': ['서평'],
-    '일·성장': ['일', '개발 환경', 'git', 'GitHub', 'Code Review'],
+    '서평': ['서평'],
+    '독서·글쓰기': ['독서', '글쓰기'],
+    '일·성장': ['일'],
+    'Tech': ['개발 환경', 'git', 'GitHub', 'Code Review'],
     '생각': ['생각'],
     '100일글쓰기': ['100일글쓰기챌린지'],
   }
@@ -91,5 +93,11 @@ const tags = ['책', '일·성장', '생각', '100일글쓰기'] as const
     color: var(--text-primary);
     font-weight: var(--font-weight-regular);
     border-bottom-color: var(--text-primary);
+  }
+
+  @media (max-width: 768px) {
+    .tag-filter {
+      margin-bottom: 0.625rem;
+    }
   }
 </style>

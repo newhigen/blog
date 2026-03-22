@@ -6,10 +6,10 @@ import { themeConfig } from '@/config'
 const { posts } = Astro.props as PostListProps
 ---
 
-<ul>
+<ul class="post-list">
   {
     posts.map((post) => (
-      <li>
+      <li data-tags={post.data.tags?.join(',') ?? ''}>
         <a href={`/${post.id}/`}>
           <div class={`post-item ${!themeConfig.date.dateOnRight ? 'date-left' : ''}`}>
             {!themeConfig.date.dateOnRight && (
@@ -74,7 +74,7 @@ const { posts } = Astro.props as PostListProps
   }
 
   .post-item {
-    height: 2.75rem;
+    height: 2.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -143,7 +143,7 @@ const { posts } = Astro.props as PostListProps
 
   @media (max-width: 768px) {
     .post-item {
-      height: 2.25rem;
+      height: 1.875rem;
     }
 
     .placeholder {

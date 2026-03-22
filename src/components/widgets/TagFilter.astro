@@ -1,0 +1,109 @@
+---
+const tags = ['서평', '독서·글쓰기', '일·성장', 'Tech', '생각', '100일글쓰기'] as const
+---
+
+<div class="tag-filter">
+  <div class="tag-list">
+    {
+      tags.map((tag) => (
+        <button class="tag-btn" data-tag={tag}>
+          {tag}
+        </button>
+      ))
+    }
+  </div>
+  <button class="tag-btn active" data-tag="all">All</button>
+</div>
+
+<script>
+  const TAG_MAP: Record<string, string[]> = {
+    서평: ['서평'],
+    '독서·글쓰기': ['독서', '글쓰기'],
+    '일·성장': ['일'],
+    Tech: ['개발 환경', 'git', 'GitHub', 'Code Review'],
+    생각: ['생각'],
+    '100일글쓰기': ['100일글쓰기챌린지']
+  }
+
+  function initTagFilter() {
+    const filterEl = document.querySelector('.tag-filter')
+    if (!filterEl) return
+
+    const buttons = filterEl.querySelectorAll<HTMLButtonElement>('.tag-btn')
+    const postItems = document.querySelectorAll<HTMLLIElement>('ul.post-list > li')
+
+    function setActive(tag: string) {
+      buttons.forEach((btn) => btn.classList.toggle('active', btn.dataset.tag === tag))
+
+      const matched = TAG_MAP[tag] ?? []
+      postItems.forEach((item) => {
+        if (tag === 'all') {
+          item.style.display = ''
+        } else {
+          const postTags = (item.dataset.tags ?? '').split(',').map((t) => t.trim())
+          item.style.display = postTags.some((t) => matched.includes(t)) ? '' : 'none'
+        }
+      })
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tag = btn.dataset.tag ?? 'all'
+        // 이미 활성화된 태그 클릭 시 all로 복귀
+        const isAlreadyActive = btn.classList.contains('active')
+        setActive(isAlreadyActive && tag !== 'all' ? 'all' : tag)
+      })
+    })
+  }
+
+  document.addEventListener('astro:page-load', initTagFilter)
+</script>
+
+<style>
+  .tag-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .tag-list {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .tag-btn {
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-light);
+    color: var(--text-tertiary);
+    background: none;
+    border: none;
+    border-bottom: 1px solid transparent;
+    padding: 0;
+    padding-bottom: 0.05rem;
+    cursor: pointer;
+    letter-spacing: var(--spacing-s);
+    transition:
+      color 0.15s ease-out,
+      border-color 0.15s ease-out;
+    font-family: inherit;
+    line-height: 1.5;
+  }
+
+  .tag-btn:hover {
+    color: var(--text-secondary);
+  }
+
+  .tag-btn.active {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-regular);
+    border-bottom-color: var(--text-primary);
+  }
+
+  @media (max-width: 768px) {
+    .tag-filter {
+      margin-bottom: 0.625rem;
+    }
+  }
+</style>

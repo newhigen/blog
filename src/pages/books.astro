@@ -5,7 +5,6 @@ import Header from '@/components/layout/Header.astro'
 import Footer from '@/components/layout/Footer.astro'
 import GradientMask from '@/components/ui/GradientMask.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
-import ReadingHeatmap from '@/components/widgets/ReadingHeatmap.astro'
 import { loadBooks, getBooksByYear } from '@/utils/books'
 import { getCollection } from 'astro:content'
 import { themeConfig } from '@/config'
@@ -97,8 +96,6 @@ const yearSections: YearSection[] = yearGroups.map((group) => {
         index
       </a>
 
-      <ReadingHeatmap />
-
       <section class="book-list">
         {
           yearSections.map((section) => (
@@ -150,7 +147,7 @@ const yearSections: YearSection[] = yearGroups.map((group) => {
     font-style: italic;
     color: var(--text-secondary);
     text-decoration: none;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1rem;
     transition: color 0.2s ease-out;
   }
 
@@ -165,7 +162,7 @@ const yearSections: YearSection[] = yearGroups.map((group) => {
   }
 
   .book-list {
-    margin-top: 2rem;
+    margin-top: 0;
   }
 
   .year-section {
@@ -215,7 +212,7 @@ const yearSections: YearSection[] = yearGroups.map((group) => {
   .year-books {
     list-style: none;
     padding: 0;
-    margin: 0.25rem 0 1.25rem 0;
+    margin: 0.25rem 0 0.5rem 0;
   }
 
   .book-entry {

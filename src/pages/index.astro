@@ -3,6 +3,7 @@ import IndexLayout from '@/layouts/IndexLayout.astro'
 import About from '@/components/widgets/About.astro'
 import ReadingHeatmap from '@/components/widgets/ReadingHeatmap.astro'
 import PostList from '@/components/widgets/PostList.astro'
+import TagFilter from '@/components/widgets/TagFilter.astro'
 import { themeConfig } from '@/config'
 import { getSortedFilteredPosts } from '@/utils/draft'
 
@@ -13,6 +14,7 @@ const posts = await getSortedFilteredPosts()
   <About />
   <ReadingHeatmap compact />
   <main>
+    <TagFilter />
     <PostList posts={posts} />
   </main>
 </IndexLayout>

@@ -1,6 +1,8 @@
 ---
 title: 관심 있는 책들
 pubDate: 2025-12-24
+tags:
+  - 생각
 ---
 
 - 25.11 - [2단계 글쓰기](https://product.kyobobook.co.kr/detail/S000001982677), 박종하, 2021

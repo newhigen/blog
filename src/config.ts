@@ -3,10 +3,10 @@ import type { ThemeConfig } from './types'
 export const themeConfig: ThemeConfig = {
   // SITE INFO ///////////////////////////////////////////////////////////////////////////////////////////
   site: {
-    website: 'https://newhigen.github.io/', // Site domain
-    title: 'newhigen', // Site title
-    author: 'newhigen', // Author name
-    description: "newhigen's blog", // Site description
+    website: 'https://sungd.uk/', // Site domain
+    title: 'sungd', // Site title
+    author: 'sungd', // Author name
+    description: "sungd's blog", // Site description
     language: 'ko-kr' // Default language
   },
 

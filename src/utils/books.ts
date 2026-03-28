@@ -84,5 +84,5 @@ export function getBooksByYear(books: Book[]): YearGroup[] {
 }
 
 export function intensityLevel(count: number): number {
-  return Math.min(count, 4)
+  return Math.min(count, 5)
 }

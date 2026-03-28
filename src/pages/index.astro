@@ -37,6 +37,13 @@ const posts = await getSortedFilteredPosts()
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 430px) {
+    .heatmap-toggle-wrap {
+      margin-top: 0;
+    }
   }
   .heatmap-toggle {
     display: flex;

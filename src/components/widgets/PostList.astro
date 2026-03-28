@@ -26,7 +26,7 @@ function shortDate(date: Date) {
     <div class="year-group">
       <p class="year-header font-features">
         {year}
-        <span class="year-count">{grouped[year].length}</span>
+        <span class="year-count">{grouped[year].length}개</span>
       </p>
       <ul>
         {grouped[year].map((post) => {
@@ -75,12 +75,12 @@ function shortDate(date: Date) {
     opacity: 0.75;
     display: flex;
     align-items: baseline;
-    gap: 0.4rem;
+    gap: 0.75rem;
   }
 
   .year-count {
-    font-size: 0.7em;
-    opacity: 0.7;
+    font-size: 0.9em;
+    opacity: 0.85;
   }
 
   ul {

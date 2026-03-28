@@ -1,5 +1,4 @@
 ---
-import FormattedDate from '@/components/widgets/FormattedDate.astro'
 import type { PostListProps } from '@/types'
 import { themeConfig } from '@/config'
 
@@ -9,54 +8,51 @@ const DOW = ['일', '월', '화', '수', '목', '금', '토']
 
 const grouped = posts.reduce<Record<string, typeof posts>>((acc, post) => {
   const d = new Date(post.data.pubDate)
-  const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+  const key = String(d.getFullYear())
   if (!acc[key]) acc[key] = []
   acc[key].push(post)
   return acc
 }, {})
 
 const groupKeys = Object.keys(grouped).sort().reverse()
+
+function shortDate(date: Date) {
+  return `${date.getMonth() + 1}. ${date.getDate()} (${DOW[date.getDay()]})`
+}
 ---
 
 <div class="post-list">
-  {groupKeys.map((key) => {
-    const [year, month] = key.split('-')
-    return (
-      <div class="month-group">
-        <p class="month-header font-features">{year} · {month}</p>
-        <ul>
-          {grouped[key].map((post) => {
-            const d = new Date(post.data.pubDate)
-            const dow = DOW[d.getDay()]
-            return (
-              <li data-tags={post.data.tags?.join(',') ?? ''}>
-                <a href={`/${post.id}/`}>
-                  <div class={`post-item ${!themeConfig.date.dateOnRight ? 'date-left' : ''}`}>
-                    {!themeConfig.date.dateOnRight && (
-                      <p class="date font-features">
-                        <FormattedDate date={post.data.pubDate} context="list" />
-                        <span class="dow">({dow})</span>
-                      </p>
-                    )}
-                    <p class="title">{post.data.title}</p>
-                    {themeConfig.date.dateOnRight && (
-                      <div class={themeConfig.general.postListDottedDivider ? 'dotted-divider' : 'divider'} />
-                    )}
-                    {themeConfig.date.dateOnRight && (
-                      <p class="date font-features">
-                        <FormattedDate date={post.data.pubDate} context="list" />
-                        <span class="dow">({dow})</span>
-                      </p>
-                    )}
-                  </div>
-                </a>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-    )
-  })}
+  {groupKeys.map((year) => (
+    <div class="year-group">
+      <p class="year-header font-features">
+        {year}
+        <span class="year-count">{grouped[year].length}</span>
+      </p>
+      <ul>
+        {grouped[year].map((post) => {
+          const d = new Date(post.data.pubDate)
+          return (
+            <li data-tags={post.data.tags?.join(',') ?? ''}>
+              <a href={`/${post.id}/`}>
+                <div class={`post-item ${!themeConfig.date.dateOnRight ? 'date-left' : ''}`}>
+                  {!themeConfig.date.dateOnRight && (
+                    <p class="date font-features">{shortDate(d)}</p>
+                  )}
+                  <p class="title">{post.data.title}</p>
+                  {themeConfig.date.dateOnRight && (
+                    <div class={themeConfig.general.postListDottedDivider ? 'dotted-divider' : 'divider'} />
+                  )}
+                  {themeConfig.date.dateOnRight && (
+                    <p class="date font-features">{shortDate(d)}</p>
+                  )}
+                </div>
+              </a>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  ))}
 </div>
 <div class="placeholder"></div>
 
@@ -67,16 +63,24 @@ const groupKeys = Object.keys(grouped).sort().reverse()
     gap: 0;
   }
 
-  .month-group {
-    margin-bottom: 0.75rem;
+  .year-group {
+    margin-bottom: 1rem;
   }
 
-  .month-header {
+  .year-header {
     margin: 0 0 0.1rem;
     font-size: var(--font-size-s);
     color: var(--text-tertiary);
     letter-spacing: var(--spacing-s);
     opacity: 0.75;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+
+  .year-count {
+    font-size: 0.7em;
+    opacity: 0.7;
   }
 
   ul {
@@ -95,13 +99,7 @@ const groupKeys = Object.keys(grouped).sort().reverse()
     transition: opacity 0.15s ease-out;
   }
 
-  .dow {
-    color: var(--text-tertiary);
-    font-size: 0.75em;
-    margin-left: 0.2em;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
+@media (hover: hover) and (pointer: fine) {
     ul:hover a {
       opacity: 0.4;
     }

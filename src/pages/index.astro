@@ -2,6 +2,8 @@
 import IndexLayout from '@/layouts/IndexLayout.astro'
 import About from '@/components/widgets/About.astro'
 import ReadingHeatmap from '@/components/widgets/ReadingHeatmap.astro'
+import WritingHeatmap from '@/components/widgets/WritingHeatmap.astro'
+import CombinedHeatmap from '@/components/widgets/CombinedHeatmap.astro'
 import PostList from '@/components/widgets/PostList.astro'
 import TagFilter from '@/components/widgets/TagFilter.astro'
 import { themeConfig } from '@/config'
@@ -12,9 +14,78 @@ const posts = await getSortedFilteredPosts()
 
 <IndexLayout title={themeConfig.site.title} description={themeConfig.site.description}>
   <About />
-  <ReadingHeatmap compact />
+
+  <div class="heatmap-toggle-wrap">
+    <div class="heatmap-toggle">
+      <button class="toggle-btn active" id="btn-reading">독서</button>
+      <button class="toggle-btn" id="btn-writing">글</button>
+      <button class="toggle-btn" id="btn-combined">같이</button>
+    </div>
+    <div id="heatmap-reading"><ReadingHeatmap compact /></div>
+    <div id="heatmap-writing" style="display: none;"><WritingHeatmap compact /></div>
+    <div id="heatmap-combined" style="display: none;"><CombinedHeatmap compact /></div>
+  </div>
+
   <main>
     <TagFilter />
     <PostList posts={posts} />
   </main>
 </IndexLayout>
+
+<style>
+  .heatmap-toggle-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 430px) {
+    .heatmap-toggle-wrap {
+      margin-top: 0;
+    }
+  }
+  .heatmap-toggle {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.35rem;
+  }
+  .toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--font-size-s);
+    color: var(--text-tertiary);
+    letter-spacing: var(--spacing-s);
+    padding: 0;
+    transition: color 0.15s ease-out;
+  }
+  .toggle-btn.active {
+    color: var(--text-primary);
+  }
+</style>
+
+<script is:inline>
+  function initHeatmapToggle() {
+    const keys = ['reading', 'writing', 'combined']
+    const btns = {}
+    const maps = {}
+    for (const k of keys) {
+      btns[k] = document.getElementById('btn-' + k)
+      maps[k] = document.getElementById('heatmap-' + k)
+    }
+    if (!btns.reading || !btns.writing || !btns.combined) return
+
+    function show(key) {
+      for (const k of keys) {
+        maps[k].style.display = k === key ? '' : 'none'
+        btns[k].classList.toggle('active', k === key)
+      }
+    }
+
+    btns.reading.addEventListener('click', () => show('reading'))
+    btns.writing.addEventListener('click', () => show('writing'))
+    btns.combined.addEventListener('click', () => show('combined'))
+  }
+  document.addEventListener('astro:page-load', initHeatmapToggle)
+</script>

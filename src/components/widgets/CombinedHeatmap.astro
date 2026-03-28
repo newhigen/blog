@@ -1,0 +1,493 @@
+---
+import { loadBooks, getHeatmapData, intensityLevel } from '@/utils/books'
+import { getSortedFilteredPosts } from '@/utils/draft'
+
+interface Props {
+  compact?: boolean
+}
+
+const { compact = false } = Astro.props
+
+// Reading data
+const books = loadBooks()
+const { cells: readingCells, years: readingYears } = getHeatmapData(books)
+
+// Writing data
+const posts = await getSortedFilteredPosts()
+const writingCells = new Map<string, { count: number; titles: string[] }>()
+for (const post of posts) {
+  const d = new Date(post.data.pubDate)
+  const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+  const existing = writingCells.get(key)
+  if (existing) {
+    existing.count++
+    existing.titles.push(post.data.title)
+  } else {
+    writingCells.set(key, { count: 1, titles: [post.data.title] })
+  }
+}
+
+// Merge years from both
+const allYears = Array.from(
+  new Set([...readingYears, ...Array.from(writingCells.keys()).map((k) => parseInt(k.split('-')[0]))])
+).sort((a, b) => b - a)
+
+// Year totals
+const yearTotals = new Map<number, { reading: number; writing: number }>()
+for (const year of allYears) {
+  let rTotal = 0, wTotal = 0
+  for (let m = 1; m <= 12; m++) {
+    const key = `${year}-${String(m).padStart(2, '0')}`
+    rTotal += readingCells.get(key)?.count ?? 0
+    wTotal += writingCells.get(key)?.count ?? 0
+  }
+  yearTotals.set(year, { reading: rTotal, writing: wTotal })
+}
+
+const now = new Date()
+const currentYear = now.getFullYear()
+const currentMonth = now.getMonth() + 1
+
+const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+---
+
+<section class:list={['combined-heatmap', { compact }]}>
+  <div class="heatmap-header">
+    <span class="heatmap-label">기록</span>
+    <div class="legend-inline">
+      <span class="legend-dot reading"></span><span class="legend-text">독서</span>
+      <span class="legend-dot writing"></span><span class="legend-text">글</span>
+    </div>
+  </div>
+
+  <div class="heatmap-grid" role="grid" aria-label="통합 히트맵">
+    <div class="month-labels" role="row">
+      <span class="year-label-spacer"></span>
+      {monthLabels.map((label) => <span class="month-label">{label}</span>)}
+      <span class="spacer-end"></span>
+    </div>
+
+    {allYears.map((year) => (
+      <div class="heatmap-row" role="row">
+        <span class="year-label" style="grid-column: 1">{year}</span>
+        {months.map((month) => {
+          const key = `${year}-${String(month).padStart(2, '0')}`
+          const rCell = readingCells.get(key)
+          const wCell = writingCells.get(key)
+          const rCount = rCell?.count ?? 0
+          const wCount = wCell?.count ?? 0
+          const rLevel = intensityLevel(rCount)
+          const wLevel = Math.min(wCount, 5)
+          const isFuture = year > currentYear || (year === currentYear && month > currentMonth)
+          const isEmpty = !isFuture && rCount === 0 && wCount === 0
+          const rTitles = rCell?.books.map((b) => b.title) ?? []
+          const wTitles = wCell?.titles ?? []
+
+          return (
+            <span
+              class:list={['heatmap-cell', { future: isFuture, empty: isEmpty }]}
+              style={`grid-column: ${month + 1}`}
+              data-reading={!isFuture && rCount > 0 ? String(rLevel) : undefined}
+              data-writing={!isFuture && wCount > 0 ? String(wLevel) : undefined}
+              data-reading-titles={rCount > 0 ? JSON.stringify(rTitles) : undefined}
+              data-writing-titles={wCount > 0 ? JSON.stringify(wTitles) : undefined}
+              data-year={String(year)}
+              data-month={String(month)}
+              role="gridcell"
+            />
+          )
+        })}
+        <span class="year-total" style="grid-column: 14">
+          {(() => { const t = yearTotals.get(year); return t ? <><span class="year-total-reading">{t.reading > 0 ? t.reading : ''}</span><span class="year-total-writing">{t.writing > 0 ? t.writing : ''}</span></> : null })()}
+        </span>
+      </div>
+    ))}
+  </div>
+
+  <div class="heatmap-footer">
+    <div class="legend">
+      <span class="legend-label">1권</span>
+      <span class="legend-cell" data-reading="1"></span>
+      <span class="legend-cell" data-reading="2"></span>
+      <span class="legend-cell" data-reading="3"></span>
+      <span class="legend-cell" data-reading="4"></span>
+      <span class="legend-cell" data-reading="5"></span>
+      <span class="legend-label">5권+</span>
+      <span class="legend-gap"></span>
+      <span class="legend-label">1개</span>
+      <span class="legend-cell" data-writing="1"></span>
+      <span class="legend-cell" data-writing="2"></span>
+      <span class="legend-cell" data-writing="3"></span>
+      <span class="legend-cell" data-writing="4"></span>
+      <span class="legend-cell" data-writing="5"></span>
+      <span class="legend-label">5개+</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initCombinedTooltip() {
+    let tooltip: HTMLDivElement | null = null
+
+    function showTooltip(cell: HTMLElement) {
+      removeTooltip()
+      const year = cell.dataset.year
+      const month = cell.dataset.month
+      if (!year || !month) return
+
+      const rRaw = cell.dataset.readingTitles
+      const wRaw = cell.dataset.writingTitles
+      const rTitles: string[] = rRaw ? JSON.parse(rRaw) : []
+      const wTitles: string[] = wRaw ? JSON.parse(wRaw) : []
+      if (!rTitles.length && !wTitles.length) return
+
+      tooltip = document.createElement('div')
+      tooltip.className = 'combined-tooltip'
+
+      const header = document.createElement('div')
+      header.className = 'combined-tooltip-header'
+      header.textContent = `${year}년 ${month}월`
+      tooltip.appendChild(header)
+
+      if (rTitles.length) {
+        const sec = document.createElement('div')
+        sec.className = 'combined-tooltip-section'
+        sec.innerHTML = `<span class="combined-tooltip-tag reading">독서 ${rTitles.length}권</span>`
+        const ul = document.createElement('ul')
+        for (const t of rTitles) {
+          const li = document.createElement('li')
+          li.textContent = t
+          ul.appendChild(li)
+        }
+        sec.appendChild(ul)
+        tooltip.appendChild(sec)
+      }
+
+      if (wTitles.length) {
+        const sec = document.createElement('div')
+        sec.className = 'combined-tooltip-section'
+        sec.innerHTML = `<span class="combined-tooltip-tag writing">글 ${wTitles.length}개</span>`
+        const ul = document.createElement('ul')
+        for (const t of wTitles) {
+          const li = document.createElement('li')
+          li.textContent = t
+          ul.appendChild(li)
+        }
+        sec.appendChild(ul)
+        tooltip.appendChild(sec)
+      }
+
+      document.body.appendChild(tooltip)
+      positionTooltip(tooltip, cell)
+    }
+
+    function positionTooltip(el: HTMLDivElement, cell: HTMLElement) {
+      const rect = cell.getBoundingClientRect()
+      const tw = el.offsetWidth || 220
+      const th = el.offsetHeight || 80
+      let left = rect.left + window.scrollX
+      let top = rect.bottom + window.scrollY + 6
+      if (left + tw > window.innerWidth - 12) left = window.innerWidth - tw - 12
+      if (rect.bottom + th + 6 > window.innerHeight) top = rect.top + window.scrollY - th - 6
+      el.style.left = `${left}px`
+      el.style.top = `${top}px`
+    }
+
+    function removeTooltip() {
+      tooltip?.remove()
+      tooltip = null
+    }
+
+    document.querySelectorAll('.combined-heatmap .heatmap-cell:not(.empty):not(.future)').forEach((cell) => {
+      const el = cell as HTMLElement
+      el.addEventListener('mouseenter', () => showTooltip(el))
+      el.addEventListener('mouseleave', removeTooltip)
+    })
+  }
+  document.addEventListener('astro:page-load', initCombinedTooltip)
+</script>
+
+<style is:global>
+  .combined-tooltip {
+    position: absolute;
+    z-index: 100;
+    background-color: var(--bg);
+    border: 1px solid color-mix(in srgb, var(--text-primary) 25%, transparent);
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.625rem;
+    pointer-events: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    min-width: 10rem;
+    max-width: 16rem;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  .combined-tooltip-header {
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    letter-spacing: normal;
+    font-variant-numeric: normal;
+    font-family: var(--sans);
+  }
+  .combined-tooltip-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.2rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+  .combined-tooltip-section ul li {
+    font-size: 0.6875rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .combined-tooltip-tag {
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.2rem;
+  }
+  .combined-tooltip-tag.reading {
+    background-color: rgba(99, 102, 241, 0.15);
+    color: rgb(99, 102, 241);
+  }
+  .combined-tooltip-tag.writing {
+    background-color: rgba(251, 113, 133, 0.15);
+    color: rgb(251, 113, 133);
+  }
+</style>
+
+<style>
+  .combined-heatmap {
+    margin-bottom: 2.25rem;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .heatmap-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.625rem;
+  }
+
+  .heatmap-label {
+    font-size: var(--font-size-s);
+    color: var(--text-secondary);
+    letter-spacing: var(--spacing-m);
+  }
+
+  .legend-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: var(--font-size-s);
+    color: var(--text-tertiary);
+    letter-spacing: var(--spacing-s);
+  }
+  .legend-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .legend-dot.reading { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.85); }
+  .legend-dot.writing { background-color: rgba(251, 113, 133, 0.75); }
+  .legend-text { margin-right: 0.35rem; }
+
+  .heatmap-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.275rem;
+  }
+
+  .month-labels,
+  .heatmap-row {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+  }
+
+  .month-label {
+    font-size: 0.625rem;
+    color: var(--text-secondary);
+    text-align: center;
+    letter-spacing: var(--spacing-s);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .year-label-spacer,
+  .year-label { grid-column: 1; }
+
+  .year-label {
+    font-size: 0.625rem;
+    font-weight: var(--font-weight-light);
+    color: var(--text-secondary);
+    text-align: right;
+    letter-spacing: var(--spacing-s);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .year-total {
+    grid-column: 14;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    font-size: 0.5625rem;
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--spacing-s);
+    font-variant-numeric: normal;
+    font-family: var(--sans);
+    width: 100%;
+  }
+  .year-total-reading { color: rgba(99, 102, 241, 0.8); text-align: right; }
+  .year-total-writing { color: rgba(251, 113, 133, 0.8); text-align: right; }
+
+  /* Cell: inset ring (독서/인디고, 농도) + 내부 작은 원 (글/teal, 농도) */
+  .heatmap-cell {
+    position: relative;
+    border-radius: 50%;
+    transition: opacity 0.15s ease-out;
+  }
+
+  /* 내부 원 (글) — 링 안쪽을 꽉 채움 */
+  .heatmap-cell::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 56%; height: 56%;
+    border-radius: 50%;
+    background-color: transparent;
+  }
+
+  .heatmap-cell.future { visibility: hidden; }
+  .heatmap-cell.empty { pointer-events: none; }
+
+  /* 독서 — inset ring, 고정 두께, 농도 변화 */
+  .heatmap-cell[data-reading='1'] { box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.15); }
+  .heatmap-cell[data-reading='2'] { box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.30); }
+  .heatmap-cell[data-reading='3'] { box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.50); }
+  .heatmap-cell[data-reading='4'] { box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.72); }
+  .heatmap-cell[data-reading='5'] { box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.92); }
+
+  /* Full size — 더 두꺼운 링 */
+  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='1'] { box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.15); }
+  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='2'] { box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.30); }
+  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='3'] { box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.50); }
+  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='4'] { box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.72); }
+  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='5'] { box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.92); }
+
+  /* 글 — 내부 원, 농도 변화 */
+  .heatmap-cell[data-writing='1']::after { background-color: rgba(251, 113, 133, 0.20); }
+  .heatmap-cell[data-writing='2']::after { background-color: rgba(251, 113, 133, 0.38); }
+  .heatmap-cell[data-writing='3']::after { background-color: rgba(251, 113, 133, 0.56); }
+  .heatmap-cell[data-writing='4']::after { background-color: rgba(251, 113, 133, 0.75); }
+  .heatmap-cell[data-writing='5']::after { background-color: rgba(251, 113, 133, 0.92); }
+
+  @media (hover: hover) and (pointer: fine) {
+    .combined-heatmap .heatmap-cell:not(.empty):not(.future):hover {
+      opacity: 0.7;
+    }
+  }
+
+  /* Legend */
+  .heatmap-footer {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 0.5rem;
+  }
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 0.1875rem;
+  }
+  .legend-label {
+    font-size: 0.5625rem;
+    color: var(--text-tertiary);
+    letter-spacing: var(--spacing-s);
+    margin: 0 0.125rem;
+  }
+  .legend-gap {
+    width: 0.625rem;
+  }
+  .legend-cell {
+    width: 0.6875rem;
+    height: 0.6875rem;
+    border-radius: 50%;
+    position: relative;
+  }
+  .legend-cell::before,
+  .legend-cell::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: transparent;
+  }
+  .legend-cell[data-reading='1'] { box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.15); }
+  .legend-cell[data-reading='2'] { box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.30); }
+  .legend-cell[data-reading='3'] { box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.50); }
+  .legend-cell[data-reading='4'] { box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.72); }
+  .legend-cell[data-reading='5'] { box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.92); }
+
+  .legend-cell[data-writing='1'] { background-color: rgba(251, 113, 133, 0.20); }
+  .legend-cell[data-writing='2'] { background-color: rgba(251, 113, 133, 0.38); }
+  .legend-cell[data-writing='3'] { background-color: rgba(251, 113, 133, 0.56); }
+  .legend-cell[data-writing='4'] { background-color: rgba(251, 113, 133, 0.75); }
+  .legend-cell[data-writing='5'] { background-color: rgba(251, 113, 133, 0.92); }
+
+  /* Compact */
+  .compact .month-labels,
+  .compact .heatmap-row {
+    grid-template-columns: 2rem repeat(12, 1.125rem) 2.5rem;
+    gap: 0.275rem;
+  }
+  .compact .heatmap-cell {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  /* Full */
+  .combined-heatmap:not(.compact) .month-labels,
+  .combined-heatmap:not(.compact) .heatmap-row {
+    grid-template-columns: 2.75rem repeat(12, 1.75rem) 3rem;
+    gap: 0.375rem;
+  }
+  .combined-heatmap:not(.compact) .heatmap-cell {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+  .combined-heatmap:not(.compact) .heatmap-grid {
+    gap: 0.375rem;
+  }
+
+  @media (max-width: 430px) {
+    .combined-heatmap { font-size: 0.5rem; margin-bottom: 1.5rem; }
+    .month-label, .year-label { font-size: 0.5rem; }
+
+    .compact .month-labels,
+    .compact .heatmap-row {
+      grid-template-columns: 1.5rem repeat(12, 0.875rem) 1.5rem;
+      gap: 0.1875rem;
+    }
+    .compact .heatmap-cell { width: 0.875rem; height: 0.875rem; }
+    .compact .heatmap-grid { gap: 0.1875rem; }
+
+    .combined-heatmap:not(.compact) .month-labels,
+    .combined-heatmap:not(.compact) .heatmap-row {
+      grid-template-columns: 2rem repeat(12, 1.0625rem) 2rem;
+      gap: 0.1875rem;
+    }
+    .combined-heatmap:not(.compact) .heatmap-cell { width: 1.0625rem; height: 1.0625rem; }
+    .combined-heatmap:not(.compact) .heatmap-grid { gap: 0.1875rem; }
+  }
+</style>

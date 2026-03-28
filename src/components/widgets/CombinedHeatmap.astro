@@ -49,7 +49,7 @@ const currentYear = now.getFullYear()
 const currentMonth = now.getMonth() + 1
 
 const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
+const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
 ---
 
 <section class:list={['combined-heatmap', { compact }]}>
@@ -99,7 +99,7 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
           )
         })}
         <span class="year-total" style="grid-column: 14">
-          {(() => { const t = yearTotals.get(year); return t ? <>{t.reading > 0 && <span class="year-total-reading">{t.reading}권</span>}{t.writing > 0 && <span class="year-total-writing">{t.writing}개</span>}</> : null })()}
+          {(() => { const t = yearTotals.get(year); return t ? <><span class="year-total-reading">{t.reading > 0 ? `${t.reading}권` : ''}</span><span class="year-total-writing">{t.writing > 0 ? `${t.writing}개` : ''}</span></> : null })()}
         </span>
       </div>
     ))}
@@ -320,10 +320,8 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
     font-size: 0.625rem;
     color: var(--text-secondary);
     text-align: center;
-    letter-spacing: 0;
+    letter-spacing: var(--spacing-s);
     font-variant-numeric: tabular-nums;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
   }
 
   .year-label-spacer,
@@ -341,14 +339,15 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
   .year-total {
     grid-column: 14;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.1rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem;
     font-size: 0.5625rem;
     font-weight: var(--font-weight-light);
     letter-spacing: var(--spacing-s);
     font-variant-numeric: tabular-nums;
-    line-height: 1.3;
+    width: 100%;
   }
   .year-total-reading { color: rgba(99, 102, 241, 0.8); }
   .year-total-writing { color: rgba(251, 113, 133, 0.8); }

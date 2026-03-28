@@ -99,7 +99,7 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
           )
         })}
         <span class="year-total" style="grid-column: 14">
-          {(() => { const t = yearTotals.get(year); return t ? <><span class="year-total-reading">{t.reading > 0 ? `${t.reading}권` : ''}</span><span class="year-total-writing">{t.writing > 0 ? `${t.writing}개` : ''}</span></> : null })()}
+          {(() => { const t = yearTotals.get(year); return t ? <><span class="year-total-reading">{t.reading > 0 ? t.reading : ''}</span><span class="year-total-writing">{t.writing > 0 ? t.writing : ''}</span></> : null })()}
         </span>
       </div>
     ))}

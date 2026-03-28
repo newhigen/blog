@@ -22,37 +22,35 @@ function shortDate(date: Date) {
 ---
 
 <div class="post-list">
-  {groupKeys.map((year) => (
-    <div class="year-group">
-      <p class="year-header font-features">
-        {year}
-        <span class="year-count">글 {grouped[year].length}개</span>
-      </p>
-      <ul>
-        {grouped[year].map((post) => {
-          const d = new Date(post.data.pubDate)
-          return (
-            <li data-tags={post.data.tags?.join(',') ?? ''}>
-              <a href={`/${post.id}/`}>
-                <div class={`post-item ${!themeConfig.date.dateOnRight ? 'date-left' : ''}`}>
-                  {!themeConfig.date.dateOnRight && (
-                    <p class="date font-features">{shortDate(d)}</p>
-                  )}
-                  <p class="title">{post.data.title}</p>
-                  {themeConfig.date.dateOnRight && (
-                    <div class={themeConfig.general.postListDottedDivider ? 'dotted-divider' : 'divider'} />
-                  )}
-                  {themeConfig.date.dateOnRight && (
-                    <p class="date font-features">{shortDate(d)}</p>
-                  )}
-                </div>
-              </a>
-            </li>
-          )
-        })}
-      </ul>
-    </div>
-  ))}
+  {
+    groupKeys.map((year) => (
+      <div class="year-group">
+        <p class="year-header font-features">
+          {year}
+          <span class="year-count">글 {grouped[year].length}개</span>
+        </p>
+        <ul>
+          {grouped[year].map((post) => {
+            const d = new Date(post.data.pubDate)
+            return (
+              <li data-tags={post.data.tags?.join(',') ?? ''}>
+                <a href={`/${post.id}/`}>
+                  <div class={`post-item ${!themeConfig.date.dateOnRight ? 'date-left' : ''}`}>
+                    {!themeConfig.date.dateOnRight && <p class="date font-features">{shortDate(d)}</p>}
+                    <p class="title">{post.data.title}</p>
+                    {themeConfig.date.dateOnRight && (
+                      <div class={themeConfig.general.postListDottedDivider ? 'dotted-divider' : 'divider'} />
+                    )}
+                    {themeConfig.date.dateOnRight && <p class="date font-features">{shortDate(d)}</p>}
+                  </div>
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    ))
+  }
 </div>
 <div class="placeholder"></div>
 
@@ -99,7 +97,7 @@ function shortDate(date: Date) {
     transition: opacity 0.15s ease-out;
   }
 
-@media (hover: hover) and (pointer: fine) {
+  @media (hover: hover) and (pointer: fine) {
     ul:hover a {
       opacity: 0.4;
     }

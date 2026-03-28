@@ -110,7 +110,7 @@ const { toc = [] }: TOCProps = Astro.props
       if (margin >= minSpace) {
         state.container.style.display = 'block'
         state.container.classList.add('fixed-position')
-        const leftPosition = toc ? margin - 176 - 40 : margin - 176
+        const leftPosition = toc ? margin - 176 - 40 - 24 : margin - 176 - 24
         state.container.style.left = `${leftPosition}px`
       } else {
         state.container.style.display = 'none'

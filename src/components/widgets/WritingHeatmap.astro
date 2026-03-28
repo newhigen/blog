@@ -55,36 +55,43 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
       <span class="year-total-spacer"></span>
     </div>
 
-    {years.map((year) => {
-      const yearTotal = posts.filter((p) => new Date(p.data.pubDate).getFullYear() === year).length
-      return (
-        <div class="heatmap-row" role="row">
-          <span class="year-label" style="grid-column: 1">{year}</span>
-          {months.map((month) => {
-            const key = `${year}-${String(month).padStart(2, '0')}`
-            const cell = cells.get(key)
-            const count = cell?.count ?? 0
-            const level = intensityLevel(count)
-            const isFuture = year > currentYear || (year === currentYear && month > currentMonth)
-            const titles = cell?.titles ?? []
-            const ariaLabel = count > 0 ? `${year}년 ${month}월: ${titles.join(', ')} (${count}개)` : `${year}년 ${month}월`
-            return (
-              <span
-                class:list={['heatmap-cell', { future: isFuture, empty: !isFuture && count === 0 }]}
-                style={`grid-column: ${month + 1}`}
-                data-level={isFuture ? undefined : String(level)}
-                data-year={!isFuture && count > 0 ? String(year) : undefined}
-                data-month={!isFuture && count > 0 ? String(month) : undefined}
-                data-titles={count > 0 ? JSON.stringify(titles) : undefined}
-                role="gridcell"
-                aria-label={isFuture ? undefined : ariaLabel}
-              />
-            )
-          })}
-          <span class="year-total" style="grid-column: 14">{yearTotal}개</span>
-        </div>
-      )
-    })}
+    {
+      years.map((year) => {
+        const yearTotal = posts.filter((p) => new Date(p.data.pubDate).getFullYear() === year).length
+        return (
+          <div class="heatmap-row" role="row">
+            <span class="year-label" style="grid-column: 1">
+              {year}
+            </span>
+            {months.map((month) => {
+              const key = `${year}-${String(month).padStart(2, '0')}`
+              const cell = cells.get(key)
+              const count = cell?.count ?? 0
+              const level = intensityLevel(count)
+              const isFuture = year > currentYear || (year === currentYear && month > currentMonth)
+              const titles = cell?.titles ?? []
+              const ariaLabel =
+                count > 0 ? `${year}년 ${month}월: ${titles.join(', ')} (${count}개)` : `${year}년 ${month}월`
+              return (
+                <span
+                  class:list={['heatmap-cell', { future: isFuture, empty: !isFuture && count === 0 }]}
+                  style={`grid-column: ${month + 1}`}
+                  data-level={isFuture ? undefined : String(level)}
+                  data-year={!isFuture && count > 0 ? String(year) : undefined}
+                  data-month={!isFuture && count > 0 ? String(month) : undefined}
+                  data-titles={count > 0 ? JSON.stringify(titles) : undefined}
+                  role="gridcell"
+                  aria-label={isFuture ? undefined : ariaLabel}
+                />
+              )
+            })}
+            <span class="year-total" style="grid-column: 14">
+              {yearTotal}개
+            </span>
+          </div>
+        )
+      })
+    }
   </div>
 
   <div class="heatmap-footer">
@@ -112,7 +119,11 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
       if (!year || !month || !raw) return
 
       let titles: string[] = []
-      try { titles = JSON.parse(raw) } catch { return }
+      try {
+        titles = JSON.parse(raw)
+      } catch {
+        return
+      }
       if (!titles.length) return
 
       tooltip = document.createElement('div')
@@ -335,8 +346,12 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
     letter-spacing: var(--spacing-s);
   }
 
-  .legend-label:first-child { margin-right: 0.125rem; }
-  .legend-label:last-child { margin-left: 0.125rem; }
+  .legend-label:first-child {
+    margin-right: 0.125rem;
+  }
+  .legend-label:last-child {
+    margin-left: 0.125rem;
+  }
 
   .legend-cell {
     width: 0.6875rem;
@@ -344,11 +359,21 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
     border-radius: 0.0625rem;
   }
 
-  .legend-cell[data-level='1'] { background-color: color-mix(in srgb, var(--text-primary) 12%, transparent); }
-  .legend-cell[data-level='2'] { background-color: color-mix(in srgb, var(--text-primary) 25%, transparent); }
-  .legend-cell[data-level='3'] { background-color: color-mix(in srgb, var(--text-primary) 42%, transparent); }
-  .legend-cell[data-level='4'] { background-color: color-mix(in srgb, var(--text-primary) 62%, transparent); }
-  .legend-cell[data-level='5'] { background-color: color-mix(in srgb, var(--text-primary) 85%, transparent); }
+  .legend-cell[data-level='1'] {
+    background-color: color-mix(in srgb, var(--text-primary) 12%, transparent);
+  }
+  .legend-cell[data-level='2'] {
+    background-color: color-mix(in srgb, var(--text-primary) 25%, transparent);
+  }
+  .legend-cell[data-level='3'] {
+    background-color: color-mix(in srgb, var(--text-primary) 42%, transparent);
+  }
+  .legend-cell[data-level='4'] {
+    background-color: color-mix(in srgb, var(--text-primary) 62%, transparent);
+  }
+  .legend-cell[data-level='5'] {
+    background-color: color-mix(in srgb, var(--text-primary) 85%, transparent);
+  }
 
   /* Compact */
   .compact .month-labels,
@@ -376,27 +401,46 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
   }
 
   @media (max-width: 430px) {
-    .writing-heatmap { font-size: 0.5rem; margin-bottom: 1.5rem; }
-    .month-label, .year-label, .year-total { font-size: 0.5rem; }
+    .writing-heatmap {
+      font-size: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .month-label,
+    .year-label,
+    .year-total {
+      font-size: 0.5rem;
+    }
 
     .compact .month-labels,
     .compact .heatmap-row {
       grid-template-columns: 1.75rem repeat(12, 1.125rem) 1.75rem;
       gap: 0.1875rem;
     }
-    .compact .heatmap-cell { width: 1.125rem; height: 0.875rem; }
-    .compact .heatmap-grid { gap: 0.1875rem; }
+    .compact .heatmap-cell {
+      width: 1.125rem;
+      height: 0.875rem;
+    }
+    .compact .heatmap-grid {
+      gap: 0.1875rem;
+    }
 
     .writing-heatmap:not(.compact) .month-labels,
     .writing-heatmap:not(.compact) .heatmap-row {
       grid-template-columns: 2.25rem repeat(12, 1.375rem) 2.25rem;
       gap: 0.1875rem;
     }
-    .writing-heatmap:not(.compact) .heatmap-cell { width: 1.375rem; height: 1.0625rem; }
-    .writing-heatmap:not(.compact) .heatmap-grid { gap: 0.1875rem; }
+    .writing-heatmap:not(.compact) .heatmap-cell {
+      width: 1.375rem;
+      height: 1.0625rem;
+    }
+    .writing-heatmap:not(.compact) .heatmap-grid {
+      gap: 0.1875rem;
+    }
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .heatmap-cell[data-titles]:hover { opacity: 0.75; }
+    .heatmap-cell[data-titles]:hover {
+      opacity: 0.75;
+    }
   }
 </style>

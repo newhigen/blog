@@ -362,17 +362,26 @@ const { toc = [] }: TOCProps = Astro.props
     transform: translateX(-4px);
   }
 
-  /* Level indentation */
+  /* Level indentation + size + color */
   .toc-level-1 .toc-link {
     padding-left: 0.875rem;
+    font-size: var(--font-size-s);
+    color: var(--text-secondary);
+    opacity: 0.9;
   }
 
   .toc-level-2 .toc-link {
-    padding-left: 1.625rem;
+    padding-left: 1.75rem;
+    font-size: calc(var(--font-size-s) * 0.94);
+    color: var(--text-tertiary);
+    opacity: 0.85;
   }
 
   .toc-level-3 .toc-link {
-    padding-left: 2.25rem;
+    padding-left: 2.75rem;
+    font-size: calc(var(--font-size-s) * 0.88);
+    color: var(--text-tertiary);
+    opacity: 0.75;
   }
 
   /* Hide on mobile */

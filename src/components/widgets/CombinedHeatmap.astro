@@ -114,6 +114,7 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
       <span class="legend-cell" data-reading="4"></span>
       <span class="legend-cell" data-reading="5"></span>
       <span class="legend-label">5권+</span>
+      <span class="legend-gap"></span>
       <span class="legend-label">1개</span>
       <span class="legend-cell" data-writing="1"></span>
       <span class="legend-cell" data-writing="2"></span>
@@ -340,8 +341,8 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    gap: 0.25rem;
+    justify-content: flex-end;
+    gap: 0.3rem;
     font-size: 0.5625rem;
     font-weight: var(--font-weight-light);
     letter-spacing: var(--spacing-s);
@@ -416,10 +417,8 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     letter-spacing: var(--spacing-s);
     margin: 0 0.125rem;
   }
-  .legend-sep {
-    font-size: 0.5625rem;
-    color: var(--text-tertiary);
-    margin: 0 0.125rem;
+  .legend-gap {
+    width: 0.625rem;
   }
   .legend-cell {
     width: 0.6875rem;

@@ -334,14 +334,14 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
     transition: opacity 0.15s ease-out;
   }
 
-  /* lower-left triangle = reading (indigo) */
+  /* left half = reading (indigo) */
   .heatmap-cell::before {
-    clip-path: polygon(0 0, 0 100%, 100% 100%);
+    clip-path: inset(0 50% 0 0);
   }
 
-  /* upper-right triangle = writing (amber) */
+  /* right half = writing (amber) */
   .heatmap-cell::after {
-    clip-path: polygon(0 0, 100% 0, 100% 100%);
+    clip-path: inset(0 0 0 50%);
   }
 
   .heatmap-cell.future { visibility: hidden; }
@@ -404,8 +404,8 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
     inset: 0;
     background-color: transparent;
   }
-  .legend-cell::before { clip-path: polygon(0 0, 0 100%, 100% 100%); }
-  .legend-cell::after  { clip-path: polygon(0 0, 100% 0, 100% 100%); }
+  .legend-cell::before { clip-path: inset(0 50% 0 0); }
+  .legend-cell::after  { clip-path: inset(0 0 0 50%); }
 
   .legend-cell[data-reading='1']::before { background-color: rgba(99, 102, 241, 0.15); }
   .legend-cell[data-reading='3']::before { background-color: rgba(99, 102, 241, 0.45); }

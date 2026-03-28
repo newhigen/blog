@@ -325,13 +325,13 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
     transition: opacity 0.15s ease-out;
   }
 
-  /* 내부 작은 원 (글) */
+  /* 내부 원 (글) — 링 안쪽을 꽉 채움 */
   .heatmap-cell::after {
     content: '';
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 32%; height: 32%;
+    width: 56%; height: 56%;
     border-radius: 50%;
     background-color: transparent;
   }
@@ -401,9 +401,9 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
     inset: 0;
     background-color: transparent;
   }
-  .legend-cell[data-reading='1'] { box-shadow: 0 0 0 1px   rgba(99, 102, 241, 0.45); }
-  .legend-cell[data-reading='3'] { box-shadow: 0 0 0 2px   rgba(99, 102, 241, 0.75); }
-  .legend-cell[data-reading='5'] { box-shadow: 0 0 0 3.5px rgba(99, 102, 241, 1.00); }
+  .legend-cell[data-reading='1'] { box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.15); }
+  .legend-cell[data-reading='3'] { box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.50); }
+  .legend-cell[data-reading='5'] { box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.92); }
 
   .legend-cell[data-writing='1'] { background-color: rgba(20, 184, 166, 0.18); }
   .legend-cell[data-writing='3'] { background-color: rgba(20, 184, 166, 0.50); }

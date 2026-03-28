@@ -338,19 +338,17 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
 
   .year-total {
     grid-column: 14;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
-    justify-content: flex-end;
-    gap: 0.3rem;
     font-size: 0.5625rem;
     font-weight: var(--font-weight-light);
     letter-spacing: var(--spacing-s);
     font-variant-numeric: tabular-nums;
     width: 100%;
   }
-  .year-total-reading { color: rgba(99, 102, 241, 0.8); }
-  .year-total-writing { color: rgba(251, 113, 133, 0.8); }
+  .year-total-reading { color: rgba(99, 102, 241, 0.8); text-align: left; padding-left: 0.25rem; }
+  .year-total-writing { color: rgba(251, 113, 133, 0.8); text-align: right; }
 
   /* Cell: inset ring (독서/인디고, 농도) + 내부 작은 원 (글/teal, 농도) */
   .heatmap-cell {

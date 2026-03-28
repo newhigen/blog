@@ -239,8 +239,8 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
     color: rgb(99, 102, 241);
   }
   .combined-tooltip-tag.writing {
-    background-color: rgba(20, 184, 166, 0.15);
-    color: rgb(20, 184, 166);
+    background-color: rgba(251, 113, 133, 0.15);
+    color: rgb(251, 113, 133);
   }
 </style>
 
@@ -280,7 +280,7 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
     display: inline-block;
   }
   .legend-dot.reading { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.85); }
-  .legend-dot.writing { background-color: rgba(20, 184, 166, 0.75); }
+  .legend-dot.writing { background-color: rgba(251, 113, 133, 0.75); }
   .legend-text { margin-right: 0.35rem; }
 
   .heatmap-grid {
@@ -354,11 +354,11 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
   .combined-heatmap:not(.compact) .heatmap-cell[data-reading='5'] { box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.92); }
 
   /* 글 — 내부 원, 농도 변화 */
-  .heatmap-cell[data-writing='1']::after { background-color: rgba(20, 184, 166, 0.20); }
-  .heatmap-cell[data-writing='2']::after { background-color: rgba(20, 184, 166, 0.38); }
-  .heatmap-cell[data-writing='3']::after { background-color: rgba(20, 184, 166, 0.56); }
-  .heatmap-cell[data-writing='4']::after { background-color: rgba(20, 184, 166, 0.75); }
-  .heatmap-cell[data-writing='5']::after { background-color: rgba(20, 184, 166, 0.92); }
+  .heatmap-cell[data-writing='1']::after { background-color: rgba(251, 113, 133, 0.20); }
+  .heatmap-cell[data-writing='2']::after { background-color: rgba(251, 113, 133, 0.38); }
+  .heatmap-cell[data-writing='3']::after { background-color: rgba(251, 113, 133, 0.56); }
+  .heatmap-cell[data-writing='4']::after { background-color: rgba(251, 113, 133, 0.75); }
+  .heatmap-cell[data-writing='5']::after { background-color: rgba(251, 113, 133, 0.92); }
 
   @media (hover: hover) and (pointer: fine) {
     .combined-heatmap .heatmap-cell:not(.empty):not(.future):hover {
@@ -405,9 +405,9 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
   .legend-cell[data-reading='3'] { box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.50); }
   .legend-cell[data-reading='5'] { box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.92); }
 
-  .legend-cell[data-writing='1'] { background-color: rgba(20, 184, 166, 0.18); }
-  .legend-cell[data-writing='3'] { background-color: rgba(20, 184, 166, 0.50); }
-  .legend-cell[data-writing='5'] { background-color: rgba(20, 184, 166, 0.88); }
+  .legend-cell[data-writing='1'] { background-color: rgba(251, 113, 133, 0.18); }
+  .legend-cell[data-writing='3'] { background-color: rgba(251, 113, 133, 0.50); }
+  .legend-cell[data-writing='5'] { background-color: rgba(251, 113, 133, 0.88); }
 
   /* Compact */
   .compact .month-labels,

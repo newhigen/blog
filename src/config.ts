@@ -4,9 +4,9 @@ export const themeConfig: ThemeConfig = {
   // SITE INFO ///////////////////////////////////////////////////////////////////////////////////////////
   site: {
     website: 'https://sungd.uk/', // Site domain
-    title: 'sungd', // Site title
-    author: 'sungd', // Author name
-    description: "sungd's blog", // Site description
+    title: 'sungduk', // Site title
+    author: 'sungduk', // Author name
+    description: "sungduk's blog", // Site description
     language: 'ko-kr' // Default language
   },
 

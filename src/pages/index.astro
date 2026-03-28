@@ -3,6 +3,7 @@ import IndexLayout from '@/layouts/IndexLayout.astro'
 import About from '@/components/widgets/About.astro'
 import ReadingHeatmap from '@/components/widgets/ReadingHeatmap.astro'
 import WritingHeatmap from '@/components/widgets/WritingHeatmap.astro'
+import CombinedHeatmap from '@/components/widgets/CombinedHeatmap.astro'
 import PostList from '@/components/widgets/PostList.astro'
 import TagFilter from '@/components/widgets/TagFilter.astro'
 import { themeConfig } from '@/config'
@@ -18,9 +19,11 @@ const posts = await getSortedFilteredPosts()
     <div class="heatmap-toggle">
       <button class="toggle-btn active" id="btn-reading">독서</button>
       <button class="toggle-btn" id="btn-writing">글</button>
+      <button class="toggle-btn" id="btn-combined">같이</button>
     </div>
     <div id="heatmap-reading"><ReadingHeatmap compact /></div>
     <div id="heatmap-writing" style="display: none;"><WritingHeatmap compact /></div>
+    <div id="heatmap-combined" style="display: none;"><CombinedHeatmap compact /></div>
   </div>
 
   <main>
@@ -57,24 +60,28 @@ const posts = await getSortedFilteredPosts()
 
 <script is:inline>
   function initHeatmapToggle() {
-    const btnReading = document.getElementById('btn-reading')
-    const btnWriting = document.getElementById('btn-writing')
-    const reading = document.getElementById('heatmap-reading')
-    const writing = document.getElementById('heatmap-writing')
-    if (!btnReading || !btnWriting || !reading || !writing) return
+    const btns = {
+      reading: document.getElementById('btn-reading'),
+      writing: document.getElementById('btn-writing'),
+      combined: document.getElementById('btn-combined'),
+    }
+    const maps = {
+      reading: document.getElementById('heatmap-reading'),
+      writing: document.getElementById('heatmap-writing'),
+      combined: document.getElementById('heatmap-combined'),
+    }
+    if (!btns.reading || !btns.writing || !btns.combined) return
 
-    btnReading.addEventListener('click', () => {
-      reading.style.display = ''
-      writing.style.display = 'none'
-      btnReading.classList.add('active')
-      btnWriting.classList.remove('active')
-    })
-    btnWriting.addEventListener('click', () => {
-      writing.style.display = ''
-      reading.style.display = 'none'
-      btnWriting.classList.add('active')
-      btnReading.classList.remove('active')
-    })
+    function show(key: 'reading' | 'writing' | 'combined') {
+      for (const k of ['reading', 'writing', 'combined'] as const) {
+        maps[k]!.style.display = k === key ? '' : 'none'
+        btns[k]!.classList.toggle('active', k === key)
+      }
+    }
+
+    btns.reading.addEventListener('click', () => show('reading'))
+    btns.writing.addEventListener('click', () => show('writing'))
+    btns.combined.addEventListener('click', () => show('combined'))
   }
   document.addEventListener('astro:page-load', initHeatmapToggle)
 </script>

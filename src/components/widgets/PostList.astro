@@ -4,37 +4,81 @@ import type { PostListProps } from '@/types'
 import { themeConfig } from '@/config'
 
 const { posts } = Astro.props as PostListProps
+
+const DOW = ['일', '월', '화', '수', '목', '금', '토']
+
+const grouped = posts.reduce<Record<string, typeof posts>>((acc, post) => {
+  const d = new Date(post.data.pubDate)
+  const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+  if (!acc[key]) acc[key] = []
+  acc[key].push(post)
+  return acc
+}, {})
+
+const groupKeys = Object.keys(grouped).sort().reverse()
 ---
 
-<ul class="post-list">
-  {
-    posts.map((post) => (
-      <li data-tags={post.data.tags?.join(',') ?? ''}>
-        <a href={`/${post.id}/`}>
-          <div class={`post-item ${!themeConfig.date.dateOnRight ? 'date-left' : ''}`}>
-            {!themeConfig.date.dateOnRight && (
-              <p class="date font-features">
-                <FormattedDate date={post.data.pubDate} context="list" />
-              </p>
-            )}
-            <p class="title">{post.data.title}</p>
-            {themeConfig.date.dateOnRight && (
-              <div class={themeConfig.general.postListDottedDivider ? 'dotted-divider' : 'divider'} />
-            )}
-            {themeConfig.date.dateOnRight && (
-              <p class="date font-features">
-                <FormattedDate date={post.data.pubDate} context="list" />
-              </p>
-            )}
-          </div>
-        </a>
-      </li>
-    ))
-  }
-</ul>
+<div class="post-list">
+  {groupKeys.map((key) => {
+    const [year, month] = key.split('-')
+    return (
+      <div class="month-group">
+        <p class="month-header font-features">{year} · {month}</p>
+        <ul>
+          {grouped[key].map((post) => {
+            const d = new Date(post.data.pubDate)
+            const dow = DOW[d.getDay()]
+            return (
+              <li data-tags={post.data.tags?.join(',') ?? ''}>
+                <a href={`/${post.id}/`}>
+                  <div class={`post-item ${!themeConfig.date.dateOnRight ? 'date-left' : ''}`}>
+                    {!themeConfig.date.dateOnRight && (
+                      <p class="date font-features">
+                        <FormattedDate date={post.data.pubDate} context="list" />
+                        <span class="dow">({dow})</span>
+                      </p>
+                    )}
+                    <p class="title">{post.data.title}</p>
+                    {themeConfig.date.dateOnRight && (
+                      <div class={themeConfig.general.postListDottedDivider ? 'dotted-divider' : 'divider'} />
+                    )}
+                    {themeConfig.date.dateOnRight && (
+                      <p class="date font-features">
+                        <FormattedDate date={post.data.pubDate} context="list" />
+                        <span class="dow">({dow})</span>
+                      </p>
+                    )}
+                  </div>
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    )
+  })}
+</div>
 <div class="placeholder"></div>
 
 <style>
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .month-group {
+    margin-bottom: 0.75rem;
+  }
+
+  .month-header {
+    margin: 0 0 0.1rem;
+    font-size: var(--font-size-s);
+    color: var(--text-tertiary);
+    letter-spacing: var(--spacing-s);
+    opacity: 0.75;
+  }
+
   ul {
     padding: 0;
     margin: 0;
@@ -49,6 +93,12 @@ const { posts } = Astro.props as PostListProps
     display: block;
     text-decoration: none;
     transition: opacity 0.15s ease-out;
+  }
+
+  .dow {
+    color: var(--text-tertiary);
+    font-size: 0.75em;
+    margin-left: 0.2em;
   }
 
   @media (hover: hover) and (pointer: fine) {

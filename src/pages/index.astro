@@ -60,22 +60,19 @@ const posts = await getSortedFilteredPosts()
 
 <script is:inline>
   function initHeatmapToggle() {
-    const btns = {
-      reading: document.getElementById('btn-reading'),
-      writing: document.getElementById('btn-writing'),
-      combined: document.getElementById('btn-combined'),
-    }
-    const maps = {
-      reading: document.getElementById('heatmap-reading'),
-      writing: document.getElementById('heatmap-writing'),
-      combined: document.getElementById('heatmap-combined'),
+    const keys = ['reading', 'writing', 'combined']
+    const btns = {}
+    const maps = {}
+    for (const k of keys) {
+      btns[k] = document.getElementById('btn-' + k)
+      maps[k] = document.getElementById('heatmap-' + k)
     }
     if (!btns.reading || !btns.writing || !btns.combined) return
 
-    function show(key: 'reading' | 'writing' | 'combined') {
-      for (const k of ['reading', 'writing', 'combined'] as const) {
-        maps[k]!.style.display = k === key ? '' : 'none'
-        btns[k]!.classList.toggle('active', k === key)
+    function show(key) {
+      for (const k of keys) {
+        maps[k].style.display = k === key ? '' : 'none'
+        btns[k].classList.toggle('active', k === key)
       }
     }
 

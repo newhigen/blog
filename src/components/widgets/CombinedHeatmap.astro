@@ -239,7 +239,7 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
     color: rgb(99, 102, 241);
   }
   .combined-tooltip-tag.writing {
-    background-color: rgba(251, 146, 60, 0.15);
+    background-color: rgba(20, 184, 166, 0.15);
     color: rgb(251, 146, 60);
   }
 </style>
@@ -279,8 +279,8 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
     border-radius: 50%;
     display: inline-block;
   }
-  .legend-dot.reading { background-color: rgba(99, 102, 241, 0.7); }
-  .legend-dot.writing { background-color: rgba(251, 146, 60, 0.7); }
+  .legend-dot.reading { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.85); }
+  .legend-dot.writing { background-color: rgba(20, 184, 166, 0.75); }
   .legend-text { margin-right: 0.35rem; }
 
   .heatmap-grid {
@@ -318,56 +318,32 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
 
   .spacer-end { grid-column: 14; }
 
-  /* Cell: background = reading (indigo), center dot = writing (amber) */
+  /* Cell: outer ring = reading (indigo), fill = writing (teal), circular */
   .heatmap-cell {
     position: relative;
-    border-radius: 0.125rem;
-  }
-
-  /* Reading: full background fill */
-  .heatmap-cell::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 0.125rem;
-    background-color: transparent;
-    transition: opacity 0.15s ease-out;
-  }
-
-  /* Writing: centered circle, size = level */
-  .heatmap-cell::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     border-radius: 50%;
-    width: 0;
-    aspect-ratio: 1;
-    background-color: transparent;
     transition: opacity 0.15s ease-out;
   }
 
   .heatmap-cell.future { visibility: hidden; }
   .heatmap-cell.empty { pointer-events: none; }
 
-  /* Reading levels — indigo background */
-  .heatmap-cell[data-reading='1']::before { background-color: rgba(99, 102, 241, 0.12); }
-  .heatmap-cell[data-reading='2']::before { background-color: rgba(99, 102, 241, 0.25); }
-  .heatmap-cell[data-reading='3']::before { background-color: rgba(99, 102, 241, 0.42); }
-  .heatmap-cell[data-reading='4']::before { background-color: rgba(99, 102, 241, 0.62); }
-  .heatmap-cell[data-reading='5']::before { background-color: rgba(99, 102, 241, 0.82); }
+  /* Reading levels — indigo outer ring */
+  .heatmap-cell[data-reading='1'] { box-shadow: 0 0 0 1px   rgba(99, 102, 241, 0.45); }
+  .heatmap-cell[data-reading='2'] { box-shadow: 0 0 0 1.5px rgba(99, 102, 241, 0.60); }
+  .heatmap-cell[data-reading='3'] { box-shadow: 0 0 0 2px   rgba(99, 102, 241, 0.75); }
+  .heatmap-cell[data-reading='4'] { box-shadow: 0 0 0 2.5px rgba(99, 102, 241, 0.88); }
+  .heatmap-cell[data-reading='5'] { box-shadow: 0 0 0 3.5px rgba(99, 102, 241, 1.00); }
 
-  /* Writing levels — amber dot (size scales) */
-  .heatmap-cell[data-writing='1']::after { width: 22%; background-color: rgba(251, 146, 60, 0.75); }
-  .heatmap-cell[data-writing='2']::after { width: 34%; background-color: rgba(251, 146, 60, 0.80); }
-  .heatmap-cell[data-writing='3']::after { width: 46%; background-color: rgba(251, 146, 60, 0.85); }
-  .heatmap-cell[data-writing='4']::after { width: 58%; background-color: rgba(251, 146, 60, 0.90); }
-  .heatmap-cell[data-writing='5']::after { width: 70%; background-color: rgba(251, 146, 60, 0.95); }
+  /* Writing levels — teal inner fill */
+  .heatmap-cell[data-writing='1'] { background-color: rgba(20, 184, 166, 0.18); }
+  .heatmap-cell[data-writing='2'] { background-color: rgba(20, 184, 166, 0.32); }
+  .heatmap-cell[data-writing='3'] { background-color: rgba(20, 184, 166, 0.50); }
+  .heatmap-cell[data-writing='4'] { background-color: rgba(20, 184, 166, 0.70); }
+  .heatmap-cell[data-writing='5'] { background-color: rgba(20, 184, 166, 0.88); }
 
   @media (hover: hover) and (pointer: fine) {
-    .combined-heatmap .heatmap-cell:not(.empty):not(.future):hover::before,
-    .combined-heatmap .heatmap-cell:not(.empty):not(.future):hover::after {
+    .combined-heatmap .heatmap-cell:not(.empty):not(.future):hover {
       opacity: 0.7;
     }
   }
@@ -397,9 +373,8 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
   .legend-cell {
     width: 0.6875rem;
     height: 0.6875rem;
-    border-radius: 0.0625rem;
+    border-radius: 50%;
     position: relative;
-    overflow: hidden;
   }
   .legend-cell::before,
   .legend-cell::after {
@@ -408,31 +383,13 @@ const monthLabels = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8�
     inset: 0;
     background-color: transparent;
   }
-  .legend-cell::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 0.0625rem;
-    background-color: transparent;
-  }
-  .legend-cell::after {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    width: 0;
-    aspect-ratio: 1;
-    background-color: transparent;
-  }
+  .legend-cell[data-reading='1'] { box-shadow: 0 0 0 1px   rgba(99, 102, 241, 0.45); }
+  .legend-cell[data-reading='3'] { box-shadow: 0 0 0 2px   rgba(99, 102, 241, 0.75); }
+  .legend-cell[data-reading='5'] { box-shadow: 0 0 0 3.5px rgba(99, 102, 241, 1.00); }
 
-  .legend-cell[data-reading='1']::before { background-color: rgba(99, 102, 241, 0.12); }
-  .legend-cell[data-reading='3']::before { background-color: rgba(99, 102, 241, 0.42); }
-  .legend-cell[data-reading='5']::before { background-color: rgba(99, 102, 241, 0.82); }
-
-  .legend-cell[data-writing='1']::after { width: 22%; background-color: rgba(251, 146, 60, 0.75); }
-  .legend-cell[data-writing='3']::after { width: 46%; background-color: rgba(251, 146, 60, 0.85); }
-  .legend-cell[data-writing='5']::after { width: 70%; background-color: rgba(251, 146, 60, 0.95); }
+  .legend-cell[data-writing='1'] { background-color: rgba(20, 184, 166, 0.18); }
+  .legend-cell[data-writing='3'] { background-color: rgba(20, 184, 166, 0.50); }
+  .legend-cell[data-writing='5'] { background-color: rgba(20, 184, 166, 0.88); }
 
   /* Compact */
   .compact .month-labels,

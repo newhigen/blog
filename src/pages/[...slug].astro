@@ -20,7 +20,7 @@ const { Content, headings, remarkPluginFrontmatter } = await render(post)
 
 const readingTime = remarkPluginFrontmatter.readingTime
 const toc = headings
-  .filter((h) => h.depth <= 3)
+  .filter((h) => h.depth <= 3 && h.text.toLowerCase() !== 'footnotes')
   .map((h, index) => ({ level: h.depth, text: h.text, id: h.slug, index }))
 ---
 

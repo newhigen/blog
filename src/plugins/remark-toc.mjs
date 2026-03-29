@@ -13,6 +13,9 @@ export default function remarkTOC() {
       const text = extractTextContent(node)
       if (!text) return
 
+      // Skip footnotes heading
+      if (text.toLowerCase() === 'footnotes') return
+
       headings.push({ level, text, index: headingIndex })
       headingIndex++
     })
@@ -30,5 +33,12 @@ function extractTextContent(node) {
     text += textNode.value
   })
 
-  return text.trim()
+  const trimmedText = text.trim()
+
+  // Exclude footnotes section (case-insensitive)
+  if (trimmedText.toLowerCase() === 'footnotes') {
+    return ''
+  }
+
+  return trimmedText
 }

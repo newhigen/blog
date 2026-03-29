@@ -24,6 +24,7 @@ pnpm-lock.yaml
 # Others
 .DS_Store
 coverage/
+.obsidian/
 
 # Media files
 *.png

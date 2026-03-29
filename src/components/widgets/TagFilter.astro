@@ -43,6 +43,13 @@ const tags = ['서평', '독서·글쓰기', '일·성장', '생각', '100일글
           item.style.display = postTags.some((t) => matched.includes(t)) ? '' : 'none'
         }
       })
+
+      document.querySelectorAll<HTMLElement>('.year-group').forEach((group) => {
+        const visible = group.querySelectorAll<HTMLLIElement>('li[data-tags]')
+        const count = [...visible].filter((li) => li.style.display !== 'none').length
+        const countEl = group.querySelector<HTMLElement>('.year-count')
+        if (countEl) countEl.textContent = `글 ${count}개`
+      })
     }
 
     buttons.forEach((btn) => {

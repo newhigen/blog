@@ -3,10 +3,8 @@
 ---
 
 <footer>
-  <a href="https://tech.sungd.uk" aria-label="Tech Blog" title="Go to Tech Blog">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-      <path d="M7 7h10v10M17 7L7 17" stroke-linecap="round" stroke-linejoin="round"></path>
-    </svg>
+  <a href="https://tech.sungd.uk" aria-label="Tech Blog" title="Go to Tech Blog" class="tech-link">
+    ⌥ tech
   </a>
   <div class="social-links">
     <a href="https://github.com/newhigen" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
@@ -40,7 +38,21 @@
     align-items: center;
   }
 
-  footer a {
+  .tech-link {
+    color: var(--text-tertiary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.15s ease-out;
+    opacity: 0.6;
+    text-decoration: none;
+  }
+
+  .tech-link:hover {
+    color: var(--text-primary);
+    opacity: 1;
+  }
+
+  .social-links a {
     color: var(--text-tertiary);
     display: flex;
     align-items: center;
@@ -48,7 +60,7 @@
     opacity: 0.5;
   }
 
-  footer a:hover {
+  .social-links a:hover {
     color: var(--text-primary);
     opacity: 1;
   }

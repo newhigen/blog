@@ -24,12 +24,17 @@ function shortDate(date: Date) {
 <div class="post-list">
   {
     groupKeys.map((year) => (
-      <div class="year-group">
-        <p class="year-header font-features">
-          {year}
-          <span class="year-count">글 {grouped[year].length}개</span>
+      <div class="year-group" data-year={year}>
+        <p class="year-header font-features" data-year-toggle={year}>
+          <span class="year-header-left">
+            {year}
+            <span class="year-count">글 {grouped[year].length}개</span>
+          </span>
+          <svg class="year-arrow" data-year-arrow={year} width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+            <path d="M3 2l4 3-4 3V2z"/>
+          </svg>
         </p>
-        <ul>
+        <ul data-year-list={year}>
           {grouped[year].map((post) => {
             const d = new Date(post.data.pubDate)
             return (
@@ -73,12 +78,40 @@ function shortDate(date: Date) {
     opacity: 0.75;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .year-header:hover {
+    opacity: 1;
+  }
+
+  .year-header-left {
+    display: flex;
+    align-items: center;
     gap: 0.75rem;
   }
 
   .year-count {
     font-size: 0.9em;
     opacity: 0.85;
+  }
+
+  .year-arrow {
+    opacity: 0.5;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: rotate(90deg);
+    flex-shrink: 0;
+  }
+
+  .year-arrow.collapsed {
+    transform: rotate(0deg);
+  }
+
+  ul[data-year-list] {
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   ul {
@@ -203,3 +236,41 @@ function shortDate(date: Date) {
     }
   }
 </style>
+
+<script is:inline>
+  function initYearAccordion() {
+    const currentYear = String(new Date().getFullYear())
+
+    document.querySelectorAll('[data-year-list]').forEach((ul) => {
+      const year = ul.getAttribute('data-year-list')
+      const arrow = document.querySelector(`[data-year-arrow="${year}"]`)
+      const isCurrentYear = year === currentYear
+
+      if (isCurrentYear) {
+        ul.style.maxHeight = ul.scrollHeight + 'px'
+      } else {
+        ul.style.maxHeight = '0'
+        arrow?.classList.add('collapsed')
+      }
+    })
+
+    document.querySelectorAll('[data-year-toggle]').forEach((header) => {
+      header.addEventListener('click', () => {
+        const year = header.getAttribute('data-year-toggle')
+        const ul = document.querySelector(`[data-year-list="${year}"]`)
+        const arrow = document.querySelector(`[data-year-arrow="${year}"]`)
+        const isOpen = ul.style.maxHeight !== '0px' && ul.style.maxHeight !== ''
+
+        if (isOpen) {
+          ul.style.maxHeight = '0'
+          arrow?.classList.add('collapsed')
+        } else {
+          ul.style.maxHeight = ul.scrollHeight + 'px'
+          arrow?.classList.remove('collapsed')
+        }
+      })
+    })
+  }
+
+  document.addEventListener('astro:page-load', initYearAccordion)
+</script>

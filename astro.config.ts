@@ -34,6 +34,10 @@ export default defineConfig({
   },
   integrations: [mdx(), sitemap()],
   vite: {
+    server: {
+      middlewareMode: false,
+      allowedHosts: ['mamie-nonbiological-incontrollably.ngrok-free.dev', 'localhost', '127.0.0.1']
+    },
     resolve: {
       alias: {
         '@': path.resolve('./src')

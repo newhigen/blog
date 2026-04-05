@@ -5,6 +5,8 @@ slug: stare-at-professional
 featured: false
 draft: false
 description: ''
+tags:
+  - 일
 ---
 
 # 전문가

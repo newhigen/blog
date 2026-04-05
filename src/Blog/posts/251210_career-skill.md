@@ -2,6 +2,8 @@
 title: 커리어 스킬
 pubDate: 2025-12-10
 category: 책
+tags:
+  - 서평
 ---
 
 ## 53장 블로그 만들기

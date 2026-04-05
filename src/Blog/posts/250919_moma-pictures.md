@@ -2,6 +2,8 @@
 title: 그림들
 pubDate: 2025-09-19
 category: 책
+tags:
+  - 서평
 ---
 
 # 책에 대하여

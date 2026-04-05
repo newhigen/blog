@@ -5,6 +5,8 @@ slug: admiring-individual
 featured: false
 draft: false
 description: ''
+tags:
+  - 일
 ---
 
 일을 잘하는 사람은 멋있다.

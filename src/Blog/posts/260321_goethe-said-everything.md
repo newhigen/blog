@@ -5,6 +5,7 @@ slug: goethe-said-everything
 featured: false
 draft: false
 tags:
+  - 서평
   - 100일글쓰기챌린지
 description: ''
 category: 책

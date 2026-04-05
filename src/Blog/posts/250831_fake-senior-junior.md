@@ -5,6 +5,8 @@ slug: fake-senior-junior
 featured: true
 draft: false
 description: ''
+tags:
+  - 생각
 ---
 
 # 전문가란

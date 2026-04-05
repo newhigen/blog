@@ -5,6 +5,8 @@ slug: decision-and-future
 featured: false
 draft: false
 description: ''
+tags:
+  - 100일글쓰기챌린지
 ---
 
 ## 코카콜라 맛있다. Eeny, meeny, miny, moe.

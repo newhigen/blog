@@ -4,8 +4,10 @@ title: 글쓰기로 나를 찾다
 slug: finding-myself-through-writing
 featured: false
 draft: false
-description: ''
+description: ""
 category: 책
+tags:
+  - 100일글쓰기챌린지
 ---
 
 # 서평

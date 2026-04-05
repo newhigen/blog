@@ -5,6 +5,8 @@ slug: appreciation-as-word
 featured: false
 draft: false
 description: ''
+tags:
+  - 일
 ---
 
 # Appreciation이란?

@@ -4,8 +4,10 @@ title: 프로젝트 헤일메리
 slug: project-hail-mary
 featured: false
 draft: false
-description: ''
+description: ""
 category: 영화
+tags:
+  - 100일글쓰기챌린지
 ---
 	
 ## 영화평

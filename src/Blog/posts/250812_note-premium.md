@@ -2,6 +2,8 @@
 title: 노트의 품격
 pubDate: 2025-08-12
 category: 책
+tags:
+  - 서평
 ---
 
 # 나에게

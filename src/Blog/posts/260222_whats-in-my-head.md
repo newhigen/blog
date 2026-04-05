@@ -5,6 +5,9 @@ slug: whats-in-my-head
 featured: false
 draft: false
 description: ''
+tags:
+  - 생각
+  - 100일글쓰기챌린지
 ---
 
 ## 도대체 머릿속에 무엇이 든거야?

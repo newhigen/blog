@@ -2,6 +2,8 @@
 title: 헬스는 쪼렙입니다만
 pubDate: 2025-08-17
 category: 책
+tags:
+  - 서평
 ---
 
 # 소개

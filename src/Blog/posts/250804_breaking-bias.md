@@ -5,6 +5,8 @@ slug: breaking-bias
 featured: false
 draft: false
 description: ''
+tags:
+  - 생각
 ---
 
 # 좁은 시야로 책 고르기

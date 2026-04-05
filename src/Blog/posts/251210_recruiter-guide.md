@@ -2,6 +2,8 @@
 title: 리크루터의 채용 실무 가이드
 pubDate: 2025-12-10
 category: 책
+tags:
+  - 서평
 ---
 
 # 소개

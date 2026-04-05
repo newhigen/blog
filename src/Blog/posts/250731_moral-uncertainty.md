@@ -5,6 +5,8 @@ slug: moral-uncertainty
 featured: true
 draft: false
 description: ''
+tags:
+  - 생각
 ---
 
 ## 도덕적 선택과 미래 예측

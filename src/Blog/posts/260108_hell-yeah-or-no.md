@@ -2,4 +2,6 @@
 title: 진짜 좋아하는 일만 하고 사는 법
 pubDate: 2026-01-08
 category: 책
+tags:
+  - 서평
 ---

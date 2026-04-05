@@ -15,6 +15,7 @@ const filters: FilterItem[] = [
   {
     id: 'movie',
     icon: true,
+    label: '영화·시리즈',
     iconPath: 'M320 112C434.9 112 528 205.1 528 320C528 434.9 434.9 528 320 528C205.1 528 112 434.9 112 320C112 205.1 205.1 112 320 112zM320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM276.5 211.5C269.1 207 259.8 206.8 252.2 211C244.6 215.2 240 223.3 240 232L240 408C240 416.7 244.7 424.7 252.3 428.9C259.9 433.1 269.1 433 276.6 428.4L420.6 340.4C427.7 336 432.1 328.3 432.1 319.9C432.1 311.5 427.7 303.8 420.6 299.4L276.6 211.4zM362 320L288 365.2L288 274.8L362 320z'
   },
   {
@@ -51,14 +52,15 @@ const filters: FilterItem[] = [
 <script>
   interface FilterConfig {
     matchCategory?: string
+    matchCategories?: string[]
     excludeCategories?: string[]
     matchTags?: string[]
   }
 
   const FILTER_MAP: Record<string, FilterConfig> = {
     book: { matchCategory: '책' },
-    movie: { matchCategory: '영화' },
-    writing: { excludeCategories: ['책', '영화'] },
+    movie: { matchCategories: ['영화', '시리즈'] },
+    writing: { excludeCategories: ['책', '영화', '시리즈'] },
     'reading-write': { matchTags: ['독서', '글쓰기'] },
     work: { matchTags: ['일', '성장'] },
     thought: { matchTags: ['생각'] },
@@ -88,11 +90,14 @@ const filters: FilterItem[] = [
           if (config?.excludeCategories) {
             // 특정 카테고리 제외 (writing 필터)
             matches = !config.excludeCategories.includes(category)
+          } else if (config?.matchCategories) {
+            // 특정 카테고리들 중 하나 표시 (movie 필터)
+            matches = config.matchCategories.includes(category)
           } else if (config?.matchCategory) {
-            // 특정 카테고리만 표시 (book, movie 필터)
+            // 특정 카테고리만 표시 (book 필터)
             matches = category === config.matchCategory
           } else if (config?.matchTags) {
-            // 특정 태그 표시 (work, thought, challenge 필터)
+            // 특정 태그 표시 (reading-write, work, thought, challenge 필터)
             matches = config.matchTags.some((t) => postTags.includes(t))
           }
 

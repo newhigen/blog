@@ -1,5 +1,5 @@
 ---
-title: 『데이터 과학자 원칙』
+title: 데이터 과학자 원칙
 pubDate: 2026-03-01
 slug: data-scientist-principle
 featured: false

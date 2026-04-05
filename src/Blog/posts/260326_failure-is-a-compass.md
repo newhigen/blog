@@ -1,5 +1,5 @@
 ---
-title: 『실패는 나침반이다』
+title: 실패는 나침반이다
 pubDate: 2026-03-26
 slug: failure-is-a-compass
 featured: false

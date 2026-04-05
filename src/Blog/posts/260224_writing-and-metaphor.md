@@ -1,5 +1,5 @@
 ---
-title: 『글쓰기와 메타포』
+title: 글쓰기와 메타포
 pubDate: 2026-02-24
 slug: writing-and-metaphor
 featured: false

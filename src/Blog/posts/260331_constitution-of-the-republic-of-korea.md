@@ -1,5 +1,5 @@
 ---
-title: 『대한민국 헌법』
+title: 대한민국 헌법
 pubDate: 2026-03-31
 slug: constitution-of-the-republic-of-korea
 featured: false

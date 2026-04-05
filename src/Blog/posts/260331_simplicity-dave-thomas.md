@@ -1,5 +1,5 @@
 ---
-title: 『미니멀리즘 프로그래머』
+title: 미니멀리즘 프로그래머
 pubDate: 2026-03-31
 slug: simplicity-dave-thomas
 featured: false

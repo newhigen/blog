@@ -1,5 +1,5 @@
 ---
-title: 『괴테는 모든 것을 말했다』
+title: 괴테는 모든 것을 말했다
 pubDate: 2026-03-21
 slug: goethe-said-everything
 featured: false

@@ -1,5 +1,5 @@
 ---
-title: 『지적 대화를 위한 넓고 얕은 지식 2』
+title: 지적 대화를 위한 넓고 얕은 지식 2
 pubDate: 2026-04-04
 slug: broad-knowledge-for-conversation
 featured: false

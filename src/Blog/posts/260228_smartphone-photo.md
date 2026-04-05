@@ -1,5 +1,5 @@
 ---
-title: 『내 인생을 빛내줄 스마트폰 사진』
+title: 내 인생을 빛내줄 스마트폰 사진
 pubDate: 2026-02-28
 slug: smartphone-photo
 featured: false

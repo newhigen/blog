@@ -34,11 +34,7 @@ for (const post of posts) {
 
 // Merge years from all three
 const allYears = Array.from(
-  new Set([
-    ...readingYears,
-    ...movieYears,
-    ...Array.from(writingCells.keys()).map((k) => parseInt(k.split('-')[0]))
-  ])
+  new Set([...readingYears, ...movieYears, ...Array.from(writingCells.keys()).map((k) => parseInt(k.split('-')[0]))])
 ).sort((a, b) => b - a)
 
 // Year totals
@@ -443,15 +439,9 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     /* 독서(상단 중앙·인디고) / 영화(하단 좌·초록) / 글(하단 우·핑크) */
     /* stop 32%: 각 dot이 셀의 ~1/3 반경 내에서 fade out되어 3개가 분리됨 */
     background-image:
-      radial-gradient(circle at 50% 30%,
-        rgba(99, 102, 241, var(--r, 0)) 0%,
-        transparent 27%),
-      radial-gradient(circle at 33% 60%,
-        rgba(239, 68, 68, var(--m, 0)) 0%,
-        transparent 27%),
-      radial-gradient(circle at 67% 60%,
-        rgba(74, 222, 128, var(--w, 0)) 0%,
-        transparent 27%);
+      radial-gradient(circle at 50% 30%, rgba(99, 102, 241, var(--r, 0)) 0%, transparent 27%),
+      radial-gradient(circle at 33% 60%, rgba(239, 68, 68, var(--m, 0)) 0%, transparent 27%),
+      radial-gradient(circle at 67% 60%, rgba(74, 222, 128, var(--w, 0)) 0%, transparent 27%);
   }
 
   .heatmap-cell.future {
@@ -492,23 +482,53 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     height: 0.6875rem;
     border-radius: 50%;
   }
-  .legend-cell[data-reading='1'] { background: radial-gradient(circle, rgba(99,102,241,0.20) 0%, transparent 70%); }
-  .legend-cell[data-reading='2'] { background: radial-gradient(circle, rgba(99,102,241,0.40) 0%, transparent 70%); }
-  .legend-cell[data-reading='3'] { background: radial-gradient(circle, rgba(99,102,241,0.60) 0%, transparent 70%); }
-  .legend-cell[data-reading='4'] { background: radial-gradient(circle, rgba(99,102,241,0.78) 0%, transparent 70%); }
-  .legend-cell[data-reading='5'] { background: radial-gradient(circle, rgba(99,102,241,0.95) 0%, transparent 70%); }
+  .legend-cell[data-reading='1'] {
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+  }
+  .legend-cell[data-reading='2'] {
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
+  }
+  .legend-cell[data-reading='3'] {
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.6) 0%, transparent 70%);
+  }
+  .legend-cell[data-reading='4'] {
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.78) 0%, transparent 70%);
+  }
+  .legend-cell[data-reading='5'] {
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.95) 0%, transparent 70%);
+  }
 
-  .legend-cell[data-movie='1'] { background: radial-gradient(circle, rgba(239,68,68,0.20) 0%, transparent 70%); }
-  .legend-cell[data-movie='2'] { background: radial-gradient(circle, rgba(239,68,68,0.40) 0%, transparent 70%); }
-  .legend-cell[data-movie='3'] { background: radial-gradient(circle, rgba(239,68,68,0.60) 0%, transparent 70%); }
-  .legend-cell[data-movie='4'] { background: radial-gradient(circle, rgba(239,68,68,0.78) 0%, transparent 70%); }
-  .legend-cell[data-movie='5'] { background: radial-gradient(circle, rgba(239,68,68,0.95) 0%, transparent 70%); }
+  .legend-cell[data-movie='1'] {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.2) 0%, transparent 70%);
+  }
+  .legend-cell[data-movie='2'] {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.4) 0%, transparent 70%);
+  }
+  .legend-cell[data-movie='3'] {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.6) 0%, transparent 70%);
+  }
+  .legend-cell[data-movie='4'] {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.78) 0%, transparent 70%);
+  }
+  .legend-cell[data-movie='5'] {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.95) 0%, transparent 70%);
+  }
 
-  .legend-cell[data-writing='1'] { background: radial-gradient(circle, rgba(74,222,128,0.20) 0%, transparent 70%); }
-  .legend-cell[data-writing='2'] { background: radial-gradient(circle, rgba(74,222,128,0.40) 0%, transparent 70%); }
-  .legend-cell[data-writing='3'] { background: radial-gradient(circle, rgba(74,222,128,0.60) 0%, transparent 70%); }
-  .legend-cell[data-writing='4'] { background: radial-gradient(circle, rgba(74,222,128,0.78) 0%, transparent 70%); }
-  .legend-cell[data-writing='5'] { background: radial-gradient(circle, rgba(74,222,128,0.95) 0%, transparent 70%); }
+  .legend-cell[data-writing='1'] {
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.2) 0%, transparent 70%);
+  }
+  .legend-cell[data-writing='2'] {
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.4) 0%, transparent 70%);
+  }
+  .legend-cell[data-writing='3'] {
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.6) 0%, transparent 70%);
+  }
+  .legend-cell[data-writing='4'] {
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.78) 0%, transparent 70%);
+  }
+  .legend-cell[data-writing='5'] {
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.95) 0%, transparent 70%);
+  }
 
   /* Compact */
   .compact .month-labels,

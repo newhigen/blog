@@ -1,1 +1,1 @@
-<%* tR += `<mark>${tp.file.selection()}</mark>` %>
+<%\* tR += `<mark>${tp.file.selection()}</mark>` %>

@@ -103,14 +103,15 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
             const rTitles = rCell?.books.map((b) => b.title) ?? []
             const mTitles = mCell?.movies.map((m) => m.title) ?? []
             const wTitles = wCell?.titles ?? []
+            const alphas = [0, 0.2, 0.4, 0.6, 0.78, 0.95]
+            const ra = isFuture ? 0 : alphas[rLevel]
+            const ma = isFuture ? 0 : alphas[mLevel]
+            const wa = isFuture ? 0 : alphas[wLevel]
 
             return (
               <span
                 class:list={['heatmap-cell', { future: isFuture, empty: isEmpty }]}
-                style={`grid-column: ${month + 1}`}
-                data-reading={!isFuture && rCount > 0 ? String(rLevel) : undefined}
-                data-movie={!isFuture && mCount > 0 ? String(mLevel) : undefined}
-                data-writing={!isFuture && wCount > 0 ? String(wLevel) : undefined}
+                style={`grid-column: ${month + 1}; --r:${ra}; --m:${ma}; --w:${wa}`}
                 data-reading-titles={rCount > 0 ? JSON.stringify(rTitles) : undefined}
                 data-movie-titles={mCount > 0 ? JSON.stringify(mTitles) : undefined}
                 data-writing-titles={wCount > 0 ? JSON.stringify(wTitles) : undefined}
@@ -255,7 +256,7 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
       tooltip = null
     }
 
-    document.querySelectorAll('.combined-heatmap .heatmap-cell:not(.empty):not(.future)').forEach((cell) => {
+    document.querySelectorAll('.combined-heatmap .heatmap-cell[data-year]').forEach((cell) => {
       const el = cell as HTMLElement
       el.addEventListener('mouseenter', () => showTooltip(el))
       el.addEventListener('mouseleave', removeTooltip)
@@ -316,8 +317,8 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     color: rgb(99, 102, 241);
   }
   .combined-tooltip-tag.movie {
-    background-color: rgba(245, 158, 11, 0.15);
-    color: rgb(245, 158, 11);
+    background-color: rgba(74, 222, 128, 0.15);
+    color: rgb(52, 185, 100);
   }
   .combined-tooltip-tag.writing {
     background-color: rgba(251, 113, 133, 0.15);
@@ -364,7 +365,7 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.85);
   }
   .legend-dot.movie {
-    background-color: rgba(245, 158, 11, 0.75);
+    background-color: rgba(74, 222, 128, 0.85);
   }
   .legend-dot.writing {
     background-color: rgba(251, 113, 133, 0.75);
@@ -427,7 +428,7 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     text-align: right;
   }
   .year-total-movie {
-    color: rgba(245, 158, 11, 0.8);
+    color: rgba(74, 222, 128, 0.85);
     text-align: right;
   }
   .year-total-writing {
@@ -435,24 +436,25 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     text-align: right;
   }
 
-  /* Cell: inset ring (독서/인디고, 농도) + 내부 작은 원 (글/teal, 농도) */
+  /* Cell: 삼각형 배치된 3개의 gaussian dot */
   .heatmap-cell {
     position: relative;
     border-radius: 50%;
     transition: opacity 0.15s ease-out;
-  }
-
-  /* 내부 원 (글) — 링 안쪽을 꽉 채움 */
-  .heatmap-cell::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    height: 50%;
-    border-radius: 50%;
-    background-color: transparent;
+    /* 독서(상단 중앙·인디고) / 영화(하단 좌·초록) / 글(하단 우·핑크) */
+    background-image:
+      radial-gradient(circle at 50% 28%,
+        rgb(99 102 241 / var(--r, 0)) 0%,
+        rgb(99 102 241 / calc(var(--r, 0) * 0.45)) 40%,
+        transparent 70%),
+      radial-gradient(circle at 28% 72%,
+        rgb(74 222 128 / var(--m, 0)) 0%,
+        rgb(74 222 128 / calc(var(--m, 0) * 0.45)) 40%,
+        transparent 70%),
+      radial-gradient(circle at 72% 72%,
+        rgb(251 113 133 / var(--w, 0)) 0%,
+        rgb(251 113 133 / calc(var(--w, 0) * 0.45)) 40%,
+        transparent 70%);
   }
 
   .heatmap-cell.future {
@@ -462,77 +464,9 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     pointer-events: none;
   }
 
-  /* 독서 — inset ring, 고정 두께, 농도 변화 */
-  .heatmap-cell[data-reading='1'] {
-    box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.15);
-  }
-  .heatmap-cell[data-reading='2'] {
-    box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.3);
-  }
-  .heatmap-cell[data-reading='3'] {
-    box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.5);
-  }
-  .heatmap-cell[data-reading='4'] {
-    box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.72);
-  }
-  .heatmap-cell[data-reading='5'] {
-    box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.92);
-  }
-
-  /* Full size — 더 두꺼운 링 */
-  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='1'] {
-    box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.15);
-  }
-  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='2'] {
-    box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.3);
-  }
-  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='3'] {
-    box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.5);
-  }
-  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='4'] {
-    box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.72);
-  }
-  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='5'] {
-    box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.92);
-  }
-
-  /* 영화 — 배경 채우기, 농도 변화 */
-  .heatmap-cell[data-movie='1'] {
-    background-color: rgba(245, 158, 11, 0.12);
-  }
-  .heatmap-cell[data-movie='2'] {
-    background-color: rgba(245, 158, 11, 0.25);
-  }
-  .heatmap-cell[data-movie='3'] {
-    background-color: rgba(245, 158, 11, 0.42);
-  }
-  .heatmap-cell[data-movie='4'] {
-    background-color: rgba(245, 158, 11, 0.62);
-  }
-  .heatmap-cell[data-movie='5'] {
-    background-color: rgba(245, 158, 11, 0.82);
-  }
-
-  /* 글 — 내부 원, 농도 변화 */
-  .heatmap-cell[data-writing='1']::after {
-    background-color: rgba(251, 113, 133, 0.2);
-  }
-  .heatmap-cell[data-writing='2']::after {
-    background-color: rgba(251, 113, 133, 0.38);
-  }
-  .heatmap-cell[data-writing='3']::after {
-    background-color: rgba(251, 113, 133, 0.56);
-  }
-  .heatmap-cell[data-writing='4']::after {
-    background-color: rgba(251, 113, 133, 0.75);
-  }
-  .heatmap-cell[data-writing='5']::after {
-    background-color: rgba(251, 113, 133, 0.92);
-  }
-
   @media (hover: hover) and (pointer: fine) {
-    .combined-heatmap .heatmap-cell:not(.empty):not(.future):hover {
-      opacity: 0.7;
+    .combined-heatmap .heatmap-cell[data-year]:hover {
+      opacity: 0.65;
     }
   }
 
@@ -560,62 +494,24 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     width: 0.6875rem;
     height: 0.6875rem;
     border-radius: 50%;
-    position: relative;
   }
-  .legend-cell::before,
-  .legend-cell::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: transparent;
-  }
-  .legend-cell[data-reading='1'] {
-    box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.15);
-  }
-  .legend-cell[data-reading='2'] {
-    box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.3);
-  }
-  .legend-cell[data-reading='3'] {
-    box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.5);
-  }
-  .legend-cell[data-reading='4'] {
-    box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.72);
-  }
-  .legend-cell[data-reading='5'] {
-    box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.92);
-  }
+  .legend-cell[data-reading='1'] { background: radial-gradient(circle, rgba(99,102,241,0.20) 0%, transparent 70%); }
+  .legend-cell[data-reading='2'] { background: radial-gradient(circle, rgba(99,102,241,0.40) 0%, transparent 70%); }
+  .legend-cell[data-reading='3'] { background: radial-gradient(circle, rgba(99,102,241,0.60) 0%, transparent 70%); }
+  .legend-cell[data-reading='4'] { background: radial-gradient(circle, rgba(99,102,241,0.78) 0%, transparent 70%); }
+  .legend-cell[data-reading='5'] { background: radial-gradient(circle, rgba(99,102,241,0.95) 0%, transparent 70%); }
 
-  .legend-cell[data-movie='1'] {
-    background-color: rgba(245, 158, 11, 0.12);
-  }
-  .legend-cell[data-movie='2'] {
-    background-color: rgba(245, 158, 11, 0.25);
-  }
-  .legend-cell[data-movie='3'] {
-    background-color: rgba(245, 158, 11, 0.42);
-  }
-  .legend-cell[data-movie='4'] {
-    background-color: rgba(245, 158, 11, 0.62);
-  }
-  .legend-cell[data-movie='5'] {
-    background-color: rgba(245, 158, 11, 0.82);
-  }
+  .legend-cell[data-movie='1'] { background: radial-gradient(circle, rgba(74,222,128,0.20) 0%, transparent 70%); }
+  .legend-cell[data-movie='2'] { background: radial-gradient(circle, rgba(74,222,128,0.40) 0%, transparent 70%); }
+  .legend-cell[data-movie='3'] { background: radial-gradient(circle, rgba(74,222,128,0.60) 0%, transparent 70%); }
+  .legend-cell[data-movie='4'] { background: radial-gradient(circle, rgba(74,222,128,0.78) 0%, transparent 70%); }
+  .legend-cell[data-movie='5'] { background: radial-gradient(circle, rgba(74,222,128,0.95) 0%, transparent 70%); }
 
-  .legend-cell[data-writing='1'] {
-    background-color: rgba(251, 113, 133, 0.2);
-  }
-  .legend-cell[data-writing='2'] {
-    background-color: rgba(251, 113, 133, 0.38);
-  }
-  .legend-cell[data-writing='3'] {
-    background-color: rgba(251, 113, 133, 0.56);
-  }
-  .legend-cell[data-writing='4'] {
-    background-color: rgba(251, 113, 133, 0.75);
-  }
-  .legend-cell[data-writing='5'] {
-    background-color: rgba(251, 113, 133, 0.92);
-  }
+  .legend-cell[data-writing='1'] { background: radial-gradient(circle, rgba(251,113,133,0.20) 0%, transparent 70%); }
+  .legend-cell[data-writing='2'] { background: radial-gradient(circle, rgba(251,113,133,0.40) 0%, transparent 70%); }
+  .legend-cell[data-writing='3'] { background: radial-gradient(circle, rgba(251,113,133,0.60) 0%, transparent 70%); }
+  .legend-cell[data-writing='4'] { background: radial-gradient(circle, rgba(251,113,133,0.78) 0%, transparent 70%); }
+  .legend-cell[data-writing='5'] { background: radial-gradient(circle, rgba(251,113,133,0.95) 0%, transparent 70%); }
 
   /* Compact */
   .compact .month-labels,
@@ -650,45 +546,6 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     .month-label,
     .year-label {
       font-size: 0.5rem;
-    }
-
-    /* 모바일: 링 두께를 셀의 25%로 맞춤 (PC와 동일 비율) */
-    /* compact: 0.75rem = 12px → 3px, full: 0.9rem = 14.4px → ~3.5px */
-    .compact .heatmap-cell[data-reading='1'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.15);
-    }
-    .compact .heatmap-cell[data-reading='2'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.3);
-    }
-    .compact .heatmap-cell[data-reading='3'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.5);
-    }
-    .compact .heatmap-cell[data-reading='4'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.72);
-    }
-    .compact .heatmap-cell[data-reading='5'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.92);
-    }
-
-    .combined-heatmap:not(.compact) .heatmap-cell[data-reading='1'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.15);
-    }
-    .combined-heatmap:not(.compact) .heatmap-cell[data-reading='2'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.3);
-    }
-    .combined-heatmap:not(.compact) .heatmap-cell[data-reading='3'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.5);
-    }
-    .combined-heatmap:not(.compact) .heatmap-cell[data-reading='4'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.72);
-    }
-    .combined-heatmap:not(.compact) .heatmap-cell[data-reading='5'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.92);
-    }
-
-    .heatmap-cell::after {
-      width: 50%;
-      height: 50%;
     }
 
     .compact .month-labels,

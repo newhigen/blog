@@ -1,8 +1,8 @@
 ---
-title: 『INFJ 의사의 병원 일기』
+title: INFJ 의사의 병원 일기
 pubDate: 2025-08-10
 tags:
-  - 서평
+category: 책
 ---
 
 # 소개

@@ -1,13 +1,13 @@
 ---
 pubDate: 2026-02-28
-title: 『내 인생을 빛내줄 스마트폰 사진』
+title: 내 인생을 빛내줄 스마트폰 사진
 slug: smartphone-photo
 featured: false
 draft: false
 tags:
   - 100일글쓰기챌린지
-  - 서평
 description: ''
+category: 책
 ---
 
 ## 느낀 점

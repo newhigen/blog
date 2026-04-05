@@ -1,8 +1,8 @@
 ---
-title: 『그림들』
+title: 그림들
 pubDate: 2025-09-19
 tags:
-  - 서평
+category: 책
 ---
 
 # 책에 대하여

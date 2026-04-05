@@ -1,8 +1,8 @@
 ---
-title: 『개발자의 글쓰기』
+title: 개발자의 글쓰기
 pubDate: 2025-12-09
 tags:
-  - 서평
+category: 책
 ---
 
 ## 7장

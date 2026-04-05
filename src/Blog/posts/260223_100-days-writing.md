@@ -1,14 +1,14 @@
 ---
 pubDate: 2026-02-23
-title: 『100일 글쓰기 곰사람 프로젝트』
+title: 100일 글쓰기 곰사람 프로젝트
 slug: 100-days-writing
 featured: false
 draft: false
 tags:
   - 100일글쓰기챌린지
-  - 서평
   - 글쓰기
 description: ''
+category: 책
 ---
 
 ## 책에 대하여

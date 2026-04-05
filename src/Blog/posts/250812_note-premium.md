@@ -1,8 +1,8 @@
 ---
-title: 『노트의 품격』
+title: 노트의 품격
 pubDate: 2025-08-12
 tags:
-  - 서평
+category: 책
 ---
 
 # 나에게

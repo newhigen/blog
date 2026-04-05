@@ -42,7 +42,11 @@ function shortDate(date: Date) {
                 <a href={`/${post.id}/`}>
                   <div class={`post-item ${!themeConfig.date.dateOnRight ? 'date-left' : ''}`}>
                     {!themeConfig.date.dateOnRight && <p class="date font-features">{shortDate(d)}</p>}
-                    <p class="title">{post.data.title}</p>
+                    <p class="title">
+                      {post.data.category === '책' && <span class="cat-icon">📚</span>}
+                      {post.data.category === '영화' && <span class="cat-icon">🎬</span>}
+                      {post.data.title}
+                    </p>
                     {themeConfig.date.dateOnRight && (
                       <div class={themeConfig.general.postListDottedDivider ? 'dotted-divider' : 'divider'} />
                     )}
@@ -180,6 +184,14 @@ function shortDate(date: Date) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+  }
+
+  .cat-icon {
+    font-size: 0.75em;
+    flex-shrink: 0;
   }
 
   .date {

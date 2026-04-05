@@ -1,8 +1,8 @@
 ---
-title: 『함께 자라기』
+title: 함께 자라기
 pubDate: 2025-09-08
 tags:
-  - 서평
+category: 책
 ---
 
 # 소개

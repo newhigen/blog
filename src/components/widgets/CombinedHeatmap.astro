@@ -442,19 +442,20 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     border-radius: 50%;
     transition: opacity 0.15s ease-out;
     /* 독서(상단 중앙·인디고) / 영화(하단 좌·초록) / 글(하단 우·핑크) */
+    /* circle 35%: 각 dot 크기를 셀의 35% 반경으로 제한해 3개가 분리되어 보임 */
     background-image:
-      radial-gradient(circle at 50% 28%,
+      radial-gradient(circle 35% at 50% 20%,
         rgb(99 102 241 / var(--r, 0)) 0%,
-        rgb(99 102 241 / calc(var(--r, 0) * 0.45)) 40%,
-        transparent 70%),
-      radial-gradient(circle at 28% 72%,
+        rgb(99 102 241 / calc(var(--r, 0) * 0.15)) 65%,
+        transparent 100%),
+      radial-gradient(circle 35% at 18% 78%,
         rgb(74 222 128 / var(--m, 0)) 0%,
-        rgb(74 222 128 / calc(var(--m, 0) * 0.45)) 40%,
-        transparent 70%),
-      radial-gradient(circle at 72% 72%,
+        rgb(74 222 128 / calc(var(--m, 0) * 0.15)) 65%,
+        transparent 100%),
+      radial-gradient(circle 35% at 82% 78%,
         rgb(251 113 133 / var(--w, 0)) 0%,
-        rgb(251 113 133 / calc(var(--w, 0) * 0.45)) 40%,
-        transparent 70%);
+        rgb(251 113 133 / calc(var(--w, 0) * 0.15)) 65%,
+        transparent 100%);
   }
 
   .heatmap-cell.future {

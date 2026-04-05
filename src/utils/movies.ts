@@ -35,7 +35,7 @@ function parseCSV(csv: string): Movie[] {
 }
 
 export function loadMovies(): Movie[] {
-  const csvPath = path.resolve('./src/data/movies.csv')
+  const csvPath = path.resolve('./src/data/movies-and-series.csv')
   const csv = fs.readFileSync(csvPath, 'utf-8')
   return parseCSV(csv).sort((a, b) => b.year - a.year || b.month - a.month || a.title.localeCompare(b.title))
 }

@@ -1,6 +1,6 @@
 ---
+title: 대한민국 헌법
 pubDate: 2026-03-31
-title: 『대한민국 헌법』
 slug: constitution-of-the-republic-of-korea
 featured: false
 draft: false
@@ -8,6 +8,7 @@ tags:
   - 100일글쓰기챌린지
   - 서평
 description: ''
+category: 책
 ---
 
 ## 서평

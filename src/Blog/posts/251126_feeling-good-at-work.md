@@ -4,9 +4,9 @@ title: 일을 잘하는 느낌?
 slug: feeling-good-at-work
 featured: false
 draft: false
+description: ''
 tags:
   - 일
-description: ''
 ---
 
 최근 들어서 '일을 잘한다'는 것이 어떤 느낌인지 어렴풋이 느껴지는 것 같다.

@@ -4,10 +4,10 @@ title: 아자 아자!
 slug: positive-direction
 featured: false
 draft: false
+description: ''
 tags:
   - 100일글쓰기챌린지
   - 생각
-description: ''
 ---
 
 ## 회사 모니터 풍경

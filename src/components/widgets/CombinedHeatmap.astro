@@ -1,5 +1,6 @@
 ---
 import { loadBooks, getHeatmapData, intensityLevel } from '@/utils/books'
+import { loadMovies, getHeatmapData as getMovieHeatmapData } from '@/utils/movies'
 import { getSortedFilteredPosts } from '@/utils/draft'
 
 interface Props {
@@ -11,6 +12,10 @@ const { compact = false } = Astro.props
 // Reading data
 const books = loadBooks()
 const { cells: readingCells, years: readingYears } = getHeatmapData(books)
+
+// Movie data
+const movies = loadMovies()
+const { cells: movieCells, years: movieYears } = getMovieHeatmapData(movies)
 
 // Writing data
 const posts = await getSortedFilteredPosts()
@@ -27,22 +32,24 @@ for (const post of posts) {
   }
 }
 
-// Merge years from both
+// Merge years from all three
 const allYears = Array.from(
-  new Set([...readingYears, ...Array.from(writingCells.keys()).map((k) => parseInt(k.split('-')[0]))])
+  new Set([...readingYears, ...movieYears, ...Array.from(writingCells.keys()).map((k) => parseInt(k.split('-')[0]))])
 ).sort((a, b) => b - a)
 
 // Year totals
-const yearTotals = new Map<number, { reading: number; writing: number }>()
+const yearTotals = new Map<number, { reading: number; movie: number; writing: number }>()
 for (const year of allYears) {
   let rTotal = 0,
+    mTotal = 0,
     wTotal = 0
   for (let m = 1; m <= 12; m++) {
     const key = `${year}-${String(m).padStart(2, '0')}`
     rTotal += readingCells.get(key)?.count ?? 0
+    mTotal += movieCells.get(key)?.count ?? 0
     wTotal += writingCells.get(key)?.count ?? 0
   }
-  yearTotals.set(year, { reading: rTotal, writing: wTotal })
+  yearTotals.set(year, { reading: rTotal, movie: mTotal, writing: wTotal })
 }
 
 const now = new Date()
@@ -58,6 +65,7 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     <span class="heatmap-label">기록</span>
     <div class="legend-inline">
       <span class="legend-dot reading"></span><span class="legend-text">독서</span>
+      <span class="legend-dot movie"></span><span class="legend-text">영화·시리즈</span>
       <span class="legend-dot writing"></span><span class="legend-text">글</span>
     </div>
   </div>
@@ -78,23 +86,30 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
           {months.map((month) => {
             const key = `${year}-${String(month).padStart(2, '0')}`
             const rCell = readingCells.get(key)
+            const mCell = movieCells.get(key)
             const wCell = writingCells.get(key)
             const rCount = rCell?.count ?? 0
+            const mCount = mCell?.count ?? 0
             const wCount = wCell?.count ?? 0
             const rLevel = intensityLevel(rCount)
+            const mLevel = Math.min(mCount, 5)
             const wLevel = Math.min(wCount, 5)
             const isFuture = year > currentYear || (year === currentYear && month > currentMonth)
-            const isEmpty = !isFuture && rCount === 0 && wCount === 0
+            const isEmpty = !isFuture && rCount === 0 && mCount === 0 && wCount === 0
             const rTitles = rCell?.books.map((b) => b.title) ?? []
+            const mTitles = mCell?.movies.map((m) => m.title) ?? []
             const wTitles = wCell?.titles ?? []
+            const alphas = [0, 0.2, 0.4, 0.6, 0.78, 0.95]
+            const ra = isFuture ? 0 : alphas[rLevel]
+            const ma = isFuture ? 0 : alphas[mLevel]
+            const wa = isFuture ? 0 : alphas[wLevel]
 
             return (
               <span
                 class:list={['heatmap-cell', { future: isFuture, empty: isEmpty }]}
-                style={`grid-column: ${month + 1}`}
-                data-reading={!isFuture && rCount > 0 ? String(rLevel) : undefined}
-                data-writing={!isFuture && wCount > 0 ? String(wLevel) : undefined}
+                style={`grid-column: ${month + 1}; --r:${ra}; --m:${ma}; --w:${wa}`}
                 data-reading-titles={rCount > 0 ? JSON.stringify(rTitles) : undefined}
+                data-movie-titles={mCount > 0 ? JSON.stringify(mTitles) : undefined}
                 data-writing-titles={wCount > 0 ? JSON.stringify(wTitles) : undefined}
                 data-year={String(year)}
                 data-month={String(month)}
@@ -108,6 +123,7 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
               return t ? (
                 <>
                   <span class="year-total-reading">{t.reading > 0 ? t.reading : ''}</span>
+                  <span class="year-total-movie">{t.movie > 0 ? t.movie : ''}</span>
                   <span class="year-total-writing">{t.writing > 0 ? t.writing : ''}</span>
                 </>
               ) : null
@@ -127,6 +143,14 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
       <span class="legend-cell" data-reading="4"></span>
       <span class="legend-cell" data-reading="5"></span>
       <span class="legend-label">5권+</span>
+      <span class="legend-gap"></span>
+      <span class="legend-label">1편</span>
+      <span class="legend-cell" data-movie="1"></span>
+      <span class="legend-cell" data-movie="2"></span>
+      <span class="legend-cell" data-movie="3"></span>
+      <span class="legend-cell" data-movie="4"></span>
+      <span class="legend-cell" data-movie="5"></span>
+      <span class="legend-label">5편+</span>
       <span class="legend-gap"></span>
       <span class="legend-label">1개</span>
       <span class="legend-cell" data-writing="1"></span>
@@ -150,10 +174,12 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
       if (!year || !month) return
 
       const rRaw = cell.dataset.readingTitles
+      const mRaw = cell.dataset.movieTitles
       const wRaw = cell.dataset.writingTitles
       const rTitles: string[] = rRaw ? JSON.parse(rRaw) : []
+      const mTitles: string[] = mRaw ? JSON.parse(mRaw) : []
       const wTitles: string[] = wRaw ? JSON.parse(wRaw) : []
-      if (!rTitles.length && !wTitles.length) return
+      if (!rTitles.length && !mTitles.length && !wTitles.length) return
 
       tooltip = document.createElement('div')
       tooltip.className = 'combined-tooltip'
@@ -169,6 +195,20 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
         sec.innerHTML = `<span class="combined-tooltip-tag reading">독서 ${rTitles.length}권</span>`
         const ul = document.createElement('ul')
         for (const t of rTitles) {
+          const li = document.createElement('li')
+          li.textContent = t
+          ul.appendChild(li)
+        }
+        sec.appendChild(ul)
+        tooltip.appendChild(sec)
+      }
+
+      if (mTitles.length) {
+        const sec = document.createElement('div')
+        sec.className = 'combined-tooltip-section'
+        sec.innerHTML = `<span class="combined-tooltip-tag movie">영화 ${mTitles.length}편</span>`
+        const ul = document.createElement('ul')
+        for (const t of mTitles) {
           const li = document.createElement('li')
           li.textContent = t
           ul.appendChild(li)
@@ -212,7 +252,7 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
       tooltip = null
     }
 
-    document.querySelectorAll('.combined-heatmap .heatmap-cell:not(.empty):not(.future)').forEach((cell) => {
+    document.querySelectorAll('.combined-heatmap .heatmap-cell[data-year]').forEach((cell) => {
       const el = cell as HTMLElement
       el.addEventListener('mouseenter', () => showTooltip(el))
       el.addEventListener('mouseleave', removeTooltip)
@@ -272,9 +312,13 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     background-color: rgba(99, 102, 241, 0.15);
     color: rgb(99, 102, 241);
   }
+  .combined-tooltip-tag.movie {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: rgb(239, 68, 68);
+  }
   .combined-tooltip-tag.writing {
-    background-color: rgba(251, 113, 133, 0.15);
-    color: rgb(251, 113, 133);
+    background-color: rgba(74, 222, 128, 0.15);
+    color: rgb(52, 185, 100);
   }
 </style>
 
@@ -314,10 +358,13 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     display: inline-block;
   }
   .legend-dot.reading {
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.85);
+    background-color: rgba(99, 102, 241, 0.85);
+  }
+  .legend-dot.movie {
+    background-color: rgba(239, 68, 68, 0.85);
   }
   .legend-dot.writing {
-    background-color: rgba(251, 113, 133, 0.75);
+    background-color: rgba(74, 222, 128, 0.85);
   }
   .legend-text {
     margin-right: 0.35rem;
@@ -362,7 +409,7 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
   .year-total {
     grid-column: 14;
     display: grid;
-    grid-template-columns: 1.2rem 1.2rem;
+    grid-template-columns: 1.2rem 1.2rem 1.2rem;
     gap: 0.1rem;
     align-items: center;
     font-size: 0.5625rem;
@@ -376,29 +423,25 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     color: rgba(99, 102, 241, 0.8);
     text-align: right;
   }
+  .year-total-movie {
+    color: rgba(239, 68, 68, 0.8);
+    text-align: right;
+  }
   .year-total-writing {
-    color: rgba(251, 113, 133, 0.8);
+    color: rgba(74, 222, 128, 0.85);
     text-align: right;
   }
 
-  /* Cell: inset ring (독서/인디고, 농도) + 내부 작은 원 (글/teal, 농도) */
+  /* Cell: 삼각형 배치된 3개의 gaussian dot */
   .heatmap-cell {
     position: relative;
-    border-radius: 50%;
     transition: opacity 0.15s ease-out;
-  }
-
-  /* 내부 원 (글) — 링 안쪽을 꽉 채움 */
-  .heatmap-cell::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    height: 50%;
-    border-radius: 50%;
-    background-color: transparent;
+    /* 독서(상단 중앙·인디고) / 영화(하단 좌·초록) / 글(하단 우·핑크) */
+    /* stop 32%: 각 dot이 셀의 ~1/3 반경 내에서 fade out되어 3개가 분리됨 */
+    background-image:
+      radial-gradient(circle at 50% 30%, rgba(99, 102, 241, var(--r, 0)) 0%, transparent 27%),
+      radial-gradient(circle at 33% 60%, rgba(239, 68, 68, var(--m, 0)) 0%, transparent 27%),
+      radial-gradient(circle at 67% 60%, rgba(74, 222, 128, var(--w, 0)) 0%, transparent 27%);
   }
 
   .heatmap-cell.future {
@@ -408,60 +451,9 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     pointer-events: none;
   }
 
-  /* 독서 — inset ring, 고정 두께, 농도 변화 */
-  .heatmap-cell[data-reading='1'] {
-    box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.15);
-  }
-  .heatmap-cell[data-reading='2'] {
-    box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.3);
-  }
-  .heatmap-cell[data-reading='3'] {
-    box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.5);
-  }
-  .heatmap-cell[data-reading='4'] {
-    box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.72);
-  }
-  .heatmap-cell[data-reading='5'] {
-    box-shadow: inset 0 0 0 4px rgba(99, 102, 241, 0.92);
-  }
-
-  /* Full size — 더 두꺼운 링 */
-  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='1'] {
-    box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.15);
-  }
-  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='2'] {
-    box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.3);
-  }
-  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='3'] {
-    box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.5);
-  }
-  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='4'] {
-    box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.72);
-  }
-  .combined-heatmap:not(.compact) .heatmap-cell[data-reading='5'] {
-    box-shadow: inset 0 0 0 6px rgba(99, 102, 241, 0.92);
-  }
-
-  /* 글 — 내부 원, 농도 변화 */
-  .heatmap-cell[data-writing='1']::after {
-    background-color: rgba(251, 113, 133, 0.2);
-  }
-  .heatmap-cell[data-writing='2']::after {
-    background-color: rgba(251, 113, 133, 0.38);
-  }
-  .heatmap-cell[data-writing='3']::after {
-    background-color: rgba(251, 113, 133, 0.56);
-  }
-  .heatmap-cell[data-writing='4']::after {
-    background-color: rgba(251, 113, 133, 0.75);
-  }
-  .heatmap-cell[data-writing='5']::after {
-    background-color: rgba(251, 113, 133, 0.92);
-  }
-
   @media (hover: hover) and (pointer: fine) {
-    .combined-heatmap .heatmap-cell:not(.empty):not(.future):hover {
-      opacity: 0.7;
+    .combined-heatmap .heatmap-cell[data-year]:hover {
+      opacity: 0.65;
     }
   }
 
@@ -489,51 +481,59 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
     width: 0.6875rem;
     height: 0.6875rem;
     border-radius: 50%;
-    position: relative;
-  }
-  .legend-cell::before,
-  .legend-cell::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: transparent;
   }
   .legend-cell[data-reading='1'] {
-    box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.15);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
   }
   .legend-cell[data-reading='2'] {
-    box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.3);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
   }
   .legend-cell[data-reading='3'] {
-    box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.5);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.6) 0%, transparent 70%);
   }
   .legend-cell[data-reading='4'] {
-    box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.72);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.78) 0%, transparent 70%);
   }
   .legend-cell[data-reading='5'] {
-    box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.92);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.95) 0%, transparent 70%);
+  }
+
+  .legend-cell[data-movie='1'] {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.2) 0%, transparent 70%);
+  }
+  .legend-cell[data-movie='2'] {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.4) 0%, transparent 70%);
+  }
+  .legend-cell[data-movie='3'] {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.6) 0%, transparent 70%);
+  }
+  .legend-cell[data-movie='4'] {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.78) 0%, transparent 70%);
+  }
+  .legend-cell[data-movie='5'] {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.95) 0%, transparent 70%);
   }
 
   .legend-cell[data-writing='1'] {
-    background-color: rgba(251, 113, 133, 0.2);
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.2) 0%, transparent 70%);
   }
   .legend-cell[data-writing='2'] {
-    background-color: rgba(251, 113, 133, 0.38);
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.4) 0%, transparent 70%);
   }
   .legend-cell[data-writing='3'] {
-    background-color: rgba(251, 113, 133, 0.56);
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.6) 0%, transparent 70%);
   }
   .legend-cell[data-writing='4'] {
-    background-color: rgba(251, 113, 133, 0.75);
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.78) 0%, transparent 70%);
   }
   .legend-cell[data-writing='5'] {
-    background-color: rgba(251, 113, 133, 0.92);
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.95) 0%, transparent 70%);
   }
 
   /* Compact */
   .compact .month-labels,
   .compact .heatmap-row {
-    grid-template-columns: 1.75rem repeat(12, 1rem) 3.5rem;
+    grid-template-columns: 1.75rem repeat(12, 1rem) 4.5rem;
     gap: 0.275rem;
   }
   .compact .heatmap-cell {
@@ -544,7 +544,7 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
   /* Full */
   .combined-heatmap:not(.compact) .month-labels,
   .combined-heatmap:not(.compact) .heatmap-row {
-    grid-template-columns: 2.4rem repeat(12, 1.5rem) 4rem;
+    grid-template-columns: 2.4rem repeat(12, 1.5rem) 5rem;
     gap: 0.375rem;
   }
   .combined-heatmap:not(.compact) .heatmap-cell {
@@ -565,48 +565,9 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
       font-size: 0.5rem;
     }
 
-    /* 모바일: 링 두께를 셀의 25%로 맞춤 (PC와 동일 비율) */
-    /* compact: 0.75rem = 12px → 3px, full: 0.9rem = 14.4px → ~3.5px */
-    .compact .heatmap-cell[data-reading='1'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.15);
-    }
-    .compact .heatmap-cell[data-reading='2'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.3);
-    }
-    .compact .heatmap-cell[data-reading='3'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.5);
-    }
-    .compact .heatmap-cell[data-reading='4'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.72);
-    }
-    .compact .heatmap-cell[data-reading='5'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.92);
-    }
-
-    .combined-heatmap:not(.compact) .heatmap-cell[data-reading='1'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.15);
-    }
-    .combined-heatmap:not(.compact) .heatmap-cell[data-reading='2'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.3);
-    }
-    .combined-heatmap:not(.compact) .heatmap-cell[data-reading='3'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.5);
-    }
-    .combined-heatmap:not(.compact) .heatmap-cell[data-reading='4'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.72);
-    }
-    .combined-heatmap:not(.compact) .heatmap-cell[data-reading='5'] {
-      box-shadow: inset 0 0 0 3px rgba(99, 102, 241, 0.92);
-    }
-
-    .heatmap-cell::after {
-      width: 50%;
-      height: 50%;
-    }
-
     .compact .month-labels,
     .compact .heatmap-row {
-      grid-template-columns: 1.25rem repeat(12, 0.75rem) 3rem;
+      grid-template-columns: 1.25rem repeat(12, 0.75rem) 3.75rem;
       gap: 0.1875rem;
     }
     .compact .heatmap-cell {
@@ -619,7 +580,7 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
 
     .combined-heatmap:not(.compact) .month-labels,
     .combined-heatmap:not(.compact) .heatmap-row {
-      grid-template-columns: 1.75rem repeat(12, 0.9rem) 3.5rem;
+      grid-template-columns: 1.75rem repeat(12, 0.9rem) 4.25rem;
       gap: 0.1875rem;
     }
     .combined-heatmap:not(.compact) .heatmap-cell {

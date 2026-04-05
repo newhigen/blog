@@ -10,6 +10,7 @@ import rehypeCleanup from './src/plugins/rehype-cleanup.mjs'
 import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
 import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
 import remarkTOC from './src/plugins/remark-toc.mjs'
+import remarkRelatable from './src/plugins/remark-relatable.mjs'
 import { themeConfig } from './src/config'
 import { imageConfig } from './src/utils/image-config'
 import path from 'path'
@@ -29,7 +30,7 @@ export default defineConfig({
       theme: 'css-variables',
       wrap: false
     },
-    remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia, remarkReadingTime, remarkTOC],
+    remarkPlugins: [remarkMath, remarkDirective, remarkRelatable, remarkEmbeddedMedia, remarkReadingTime, remarkTOC],
     rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode]
   },
   integrations: [mdx(), sitemap()],

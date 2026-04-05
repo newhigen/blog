@@ -4,9 +4,9 @@ title: 전문가의 표정
 slug: stare-at-professional
 featured: false
 draft: false
+description: ''
 tags:
   - 일
-description: ''
 ---
 
 # 전문가

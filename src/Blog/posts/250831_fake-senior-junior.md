@@ -4,9 +4,9 @@ title: 시니어처럼 보이고 싶은 주니어 - 인지적 편향 부수기 (
 slug: fake-senior-junior
 featured: true
 draft: false
+description: ''
 tags:
   - 생각
-description: ''
 ---
 
 # 전문가란

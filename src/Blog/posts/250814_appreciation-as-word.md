@@ -4,9 +4,9 @@ title: Appreciation as Word
 slug: appreciation-as-word
 featured: false
 draft: false
+description: ''
 tags:
   - 일
-description: ''
 ---
 
 # Appreciation이란?

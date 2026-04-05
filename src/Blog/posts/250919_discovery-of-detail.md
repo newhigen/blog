@@ -1,6 +1,7 @@
 ---
-title: 『디테일의 발견』
+title: 디테일의 발견
 pubDate: 2025-09-19
+category: 책
 tags:
   - 서평
 ---

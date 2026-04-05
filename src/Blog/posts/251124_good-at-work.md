@@ -1,6 +1,7 @@
 ---
-title: 『일을 잘한다는 것』
+title: 일을 잘한다는 것
 pubDate: 2025-11-24
+category: 책
 tags:
   - 서평
 ---

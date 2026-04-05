@@ -619,3 +619,13 @@
 .prose iframe[src*='spotify.com'] {
   aspect-ratio: auto;
 }
+
+/* Relatable marker */
+sup.relatable {
+  font-size: 0.6em;
+  font-weight: 500;
+  color: rgba(99, 102, 241, 0.75);
+  letter-spacing: 0.02em;
+  vertical-align: super;
+  margin-left: 0.15em;
+}

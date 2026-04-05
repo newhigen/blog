@@ -1,6 +1,7 @@
 ---
-title: 『단 한 번의 삶』
+title: 단 한 번의 삶
 pubDate: 2025-08-10
+category: 책
 tags:
   - 서평
 ---

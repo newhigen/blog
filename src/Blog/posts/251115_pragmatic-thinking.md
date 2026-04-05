@@ -1,6 +1,7 @@
 ---
-title: 『실용주의 사고와 학습』
+title: 실용주의 사고와 학습
 pubDate: 2025-11-15
+category: 책
 tags:
   - 서평
 ---

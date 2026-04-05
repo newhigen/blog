@@ -1,6 +1,7 @@
 ---
 title: 독서법
 pubDate: 2025-08-03
+category: 책
 tags:
   - 서평
 ---

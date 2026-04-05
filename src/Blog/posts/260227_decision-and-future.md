@@ -4,9 +4,9 @@ title: B와 D 사이의 C. 그리고 STAY..
 slug: decision-and-future
 featured: false
 draft: false
+description: ''
 tags:
   - 100일글쓰기챌린지
-description: ''
 ---
 
 ## 코카콜라 맛있다. Eeny, meeny, miny, moe.

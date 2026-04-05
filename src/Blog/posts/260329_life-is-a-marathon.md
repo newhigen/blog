@@ -4,10 +4,10 @@ title: 인생은 마라톤
 slug: life-is-a-marathon
 featured: false
 draft: false
+description: ''
 tags:
   - 100일글쓰기챌린지
   - 생각
-description: ''
 ---
 
 # 요약

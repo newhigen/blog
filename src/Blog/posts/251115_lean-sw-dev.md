@@ -1,6 +1,7 @@
 ---
-title: 『린 소프트웨어 개발』
+title: 린 소프트웨어 개발
 pubDate: 2025-11-15
+category: 책
 tags:
   - 서평
 ---

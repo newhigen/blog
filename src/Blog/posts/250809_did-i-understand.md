@@ -1,6 +1,7 @@
 ---
-title: 『안다는 착각』
+title: 안다는 착각
 pubDate: 2025-08-09
+category: 책
 tags:
   - 서평
 ---

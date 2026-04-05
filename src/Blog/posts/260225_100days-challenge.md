@@ -1,5 +1,5 @@
 ---
-title: #100일챌린지
+title: "#100일챌린지"
 pubDate: 2026-02-25
 slug: 100days-challenge
 featured: false

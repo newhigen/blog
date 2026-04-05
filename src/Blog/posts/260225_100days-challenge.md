@@ -1,9 +1,12 @@
 ---
+title: 『#100일챌린지』
 pubDate: 2026-02-25
-title: "#100일챌린지"
 slug: 100days-challenge
 featured: false
 draft: false
+tags:
+  - 100일글쓰기챌린지
+  - 글쓰기
 description: ''
 category: 책
 ---

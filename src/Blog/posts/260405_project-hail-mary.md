@@ -5,7 +5,7 @@ slug: project-hail-mary
 featured: false
 draft: false
 description: ""
-category: 영화
+category: 영화·시리즈
 tags:
   - 100일글쓰기챌린지
 ---

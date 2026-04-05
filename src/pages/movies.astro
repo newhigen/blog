@@ -13,7 +13,7 @@ const movies = loadMovies()
 const yearGroups = getMoviesByYear(movies)
 const currentYear = new Date().getFullYear()
 
-// Load posts with category 영화 to match titles
+// Load posts with category 영화·시리즈 to match titles
 const posts = await getCollection('posts', ({ id }) => !id.startsWith('_'))
 
 function normalizeTitle(title: string): string {
@@ -22,7 +22,7 @@ function normalizeTitle(title: string): string {
 
 const moviePostMap = new Map<string, string>()
 for (const post of posts) {
-  if (post.data.category === '영화') {
+  if (post.data.category === '영화·시리즈') {
     const normalized = normalizeTitle(post.data.title)
     moviePostMap.set(normalized, `/${post.id}/`)
   }

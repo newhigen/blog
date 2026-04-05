@@ -105,6 +105,7 @@ const filters: FilterItem[] = [
         const count = [...visible].filter((li) => li.style.display !== 'none').length
         const countEl = group.querySelector<HTMLElement>('.year-count')
         if (countEl) countEl.textContent = `글 ${count}개`
+        group.style.display = count === 0 ? 'none' : ''
       })
     }
 

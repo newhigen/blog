@@ -4,8 +4,6 @@ title: B와 D 사이의 C. 그리고 STAY..
 slug: decision-and-future
 featured: false
 draft: false
-tags:
-  - 100일글쓰기챌린지
 description: ''
 ---
 

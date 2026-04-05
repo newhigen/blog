@@ -1,7 +1,6 @@
 ---
 title: 함께 자라기
 pubDate: 2025-09-08
-tags:
 category: 책
 ---
 

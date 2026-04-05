@@ -1,7 +1,6 @@
 ---
 title: 애플에서는 단순하게 일합니다
 pubDate: 2025-11-30
-tags:
 category: 책
 ---
 

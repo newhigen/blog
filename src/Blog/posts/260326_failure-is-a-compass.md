@@ -4,8 +4,6 @@ title: 실패는 나침반이다
 slug: failure-is-a-compass
 featured: false
 draft: false
-tags:
-  - 100일글쓰기챌린지
 description: ''
 category: 책
 ---

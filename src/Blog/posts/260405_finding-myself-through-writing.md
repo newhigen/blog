@@ -4,8 +4,6 @@ title: 글쓰기로 나를 찾다
 slug: finding-myself-through-writing
 featured: false
 draft: false
-tags:
-  - 100일글쓰기챌린지
 description: ''
 category: 책
 ---
@@ -65,5 +63,14 @@ category: 책
 "날기를 간절히 원해야해 ..." 『꽃들에게 희망을』
 
 지하철에서 책 읽고 글쓰는 사람.<sup>공감</sup>
+- '리얼리스트 but 불가능한 꿈.'<sup>체게바라</sup>
+
+좋은 글쓰기는 좋은 글 읽기부터. 좋은 글은 '나의 맛'이.
+
+글을 쓰며 '내'가 명로해진다.
+
+<mark>"현재는 미래의 내가 부러워할 어제."</mark>
+
+
 
 [^1]: 『와인버그에게 배우는 차곡차곡 글쓰기』

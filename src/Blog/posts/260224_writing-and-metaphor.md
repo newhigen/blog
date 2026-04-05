@@ -4,9 +4,6 @@ title: 글쓰기와 메타포
 slug: writing-and-metaphor
 featured: false
 draft: false
-tags:
-  - 100일글쓰기챌린지
-  - 글쓰기
 description: ''
 category: 책
 ---

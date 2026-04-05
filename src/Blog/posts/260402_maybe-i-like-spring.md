@@ -4,9 +4,6 @@ title: 봄이 좋은가 보다
 slug: maybe-i-like-spring
 featured: false
 draft: false
-tags:
-  - 100일글쓰기챌린지
-  - 생각
 description: ''
 ---
 

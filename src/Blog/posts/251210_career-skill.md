@@ -1,7 +1,6 @@
 ---
 title: 커리어 스킬
 pubDate: 2025-12-10
-tags:
 category: 책
 ---
 

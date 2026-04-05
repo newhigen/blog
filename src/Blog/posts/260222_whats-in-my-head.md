@@ -4,9 +4,6 @@ title: 2026년 2월, 복잡한 머릿속
 slug: whats-in-my-head
 featured: false
 draft: false
-tags:
-  - 생각
-  - 100일글쓰기챌린지
 description: ''
 ---
 

@@ -4,8 +4,6 @@ title: 경험 + 지식 = 숙련
 slug: experience-and-knowledge
 featured: false
 draft: false
-tags:
-  - 일
 description: ''
 ---
 

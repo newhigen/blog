@@ -1,7 +1,6 @@
 ---
 title: 단 한 번의 삶
 pubDate: 2025-08-10
-tags:
 category: 책
 ---
 

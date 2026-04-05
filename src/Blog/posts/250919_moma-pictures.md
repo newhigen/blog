@@ -1,7 +1,6 @@
 ---
 title: 그림들
 pubDate: 2025-09-19
-tags:
 category: 책
 ---
 

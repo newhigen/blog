@@ -4,9 +4,6 @@ title: 1등
 slug: 1st-place
 featured: false
 draft: false
-tags:
-  - 100일글쓰기챌린지
-  - 생각
 description: ''
 ---
 

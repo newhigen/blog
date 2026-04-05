@@ -1,7 +1,6 @@
 ---
 title: 안다는 착각
 pubDate: 2025-08-09
-tags:
 category: 책
 ---
 

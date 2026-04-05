@@ -4,8 +4,6 @@ title: 미니멀리즘 프로그래머
 slug: simplicity-dave-thomas
 featured: false
 draft: false
-tags:
-  - 100일글쓰기챌린지
 description: ''
 category: 책
 ---

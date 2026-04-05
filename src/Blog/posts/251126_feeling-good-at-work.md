@@ -4,8 +4,6 @@ title: 일을 잘하는 느낌?
 slug: feeling-good-at-work
 featured: false
 draft: false
-tags:
-  - 일
 description: ''
 ---
 

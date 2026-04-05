@@ -4,9 +4,6 @@ title: 아자 아자!
 slug: positive-direction
 featured: false
 draft: false
-tags:
-  - 100일글쓰기챌린지
-  - 생각
 description: ''
 ---
 

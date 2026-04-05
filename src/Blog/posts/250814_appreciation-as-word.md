@@ -4,8 +4,6 @@ title: Appreciation as Word
 slug: appreciation-as-word
 featured: false
 draft: false
-tags:
-  - 일
 description: ''
 ---
 

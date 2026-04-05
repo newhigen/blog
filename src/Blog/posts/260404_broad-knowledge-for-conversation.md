@@ -4,8 +4,6 @@ title: 지적 대화를 위한 넓고 얕은 지식 2
 slug: broad-knowledge-for-conversation
 featured: false
 draft: false
-tags:
-  - 100일글쓰기챌린지
 description: ''
 category: 책
 ---

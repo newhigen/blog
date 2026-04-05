@@ -4,9 +4,6 @@ title: 인생을 덜 진지하게
 slug: less-bold-life
 featured: false
 draft: false
-tags:
-  - 100일글쓰기챌린지
-  - 생각
 description: ''
 ---
 

@@ -4,8 +4,6 @@ title: 사람은 무엇으로 사는가
 slug: what-do-people-live-for
 featured: false
 draft: false
-tags:
-  - 100일글쓰기챌린지
 description: ''
 category: 책
 ---

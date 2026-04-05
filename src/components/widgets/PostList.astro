@@ -38,7 +38,7 @@ function shortDate(date: Date) {
           {grouped[year].map((post) => {
             const d = new Date(post.data.pubDate)
             return (
-              <li data-tags={post.data.tags?.join(',') ?? ''}>
+              <li data-category={post.data.category ?? ''} data-tags={post.data.tags?.join(',') ?? ''}>
                 <a href={`/${post.id}/`}>
                   <div class={`post-item ${!themeConfig.date.dateOnRight ? 'date-left' : ''}`}>
                     {!themeConfig.date.dateOnRight && <p class="date font-features">{shortDate(d)}</p>}

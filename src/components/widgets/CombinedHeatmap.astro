@@ -206,7 +206,7 @@ const monthLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
       if (mTitles.length) {
         const sec = document.createElement('div')
         sec.className = 'combined-tooltip-section'
-        sec.innerHTML = `<span class="combined-tooltip-tag movie">영화 ${mTitles.length}편</span>`
+        sec.innerHTML = `<span class="combined-tooltip-tag movie">영화·시리즈 ${mTitles.length}편</span>`
         const ul = document.createElement('ul')
         for (const t of mTitles) {
           const li = document.createElement('li')

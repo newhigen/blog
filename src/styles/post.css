@@ -230,9 +230,9 @@
 }
 
 .prose blockquote.alert p:first-child::before {
-  font-weight: var(--font-weight-bold);
   margin-right: 0.5em;
-  font-size: 0.95em;
+  font-size: 1.1em;
+  font-weight: normal;
 }
 
 .prose blockquote.alert p {
@@ -242,27 +242,27 @@
 }
 
 .prose blockquote.alert-note p:first-child::before {
-  content: '정보';
+  content: 'ℹ';
   color: #5577bb;
 }
 
 .prose blockquote.alert-warning p:first-child::before {
-  content: '경고';
+  content: '⚠';
   color: #997755;
 }
 
 .prose blockquote.alert-important p:first-child::before {
-  content: '중요';
+  content: '⭐';
   color: #8877aa;
 }
 
 .prose blockquote.alert-caution p:first-child::before {
-  content: '주의';
+  content: '🚨';
   color: #aa6666;
 }
 
 .prose blockquote.alert-tip p:first-child::before {
-  content: '팁';
+  content: '💡';
   color: #669977;
 }
 

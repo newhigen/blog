@@ -6,7 +6,7 @@ export const themeConfig: ThemeConfig = {
     website: 'https://sungd.uk/', // Site domain
     title: 'sungduk', // Site title
     author: 'sungduk', // Author name
-    description: "sungduk's blog", // Site description
+    description: '읽은 것들을, 그리고 생각도 글로 씁니다.', // Site description
     language: 'ko-kr' // Default language
   },
 

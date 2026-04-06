@@ -235,23 +235,23 @@
 }
 
 .prose blockquote.alert-note {
-  border-left-color: #0969da;
+  border-left-color: rgba(0, 0, 0, 0.2);
 }
 
 .prose blockquote.alert-warning {
-  border-left-color: #9e6a03;
+  border-left-color: rgba(0, 0, 0, 0.2);
 }
 
 .prose blockquote.alert-important {
-  border-left-color: #a371f7;
+  border-left-color: rgba(0, 0, 0, 0.2);
 }
 
 .prose blockquote.alert-caution {
-  border-left-color: #d1242f;
+  border-left-color: rgba(0, 0, 0, 0.2);
 }
 
 .prose blockquote.alert-tip {
-  border-left-color: #1a7f0f;
+  border-left-color: rgba(0, 0, 0, 0.2);
 }
 
 /* Unordered lists */

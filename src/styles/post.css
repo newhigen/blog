@@ -223,7 +223,6 @@
 /* GitHub-style alerts/callouts */
 .prose blockquote.alert {
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-left: 3px solid;
   border-radius: 4px;
   padding: 0.75em 1em 0.75em 1em;
   margin: 1em 0;
@@ -242,17 +241,9 @@
   color: var(--text-primary);
 }
 
-.prose blockquote.alert-note {
-  border-left-color: #5577bb;
-}
-
 .prose blockquote.alert-note p:first-child::before {
   content: '정보';
   color: #5577bb;
-}
-
-.prose blockquote.alert-warning {
-  border-left-color: #997755;
 }
 
 .prose blockquote.alert-warning p:first-child::before {
@@ -260,26 +251,14 @@
   color: #997755;
 }
 
-.prose blockquote.alert-important {
-  border-left-color: #8877aa;
-}
-
 .prose blockquote.alert-important p:first-child::before {
   content: '중요';
   color: #8877aa;
 }
 
-.prose blockquote.alert-caution {
-  border-left-color: #aa6666;
-}
-
 .prose blockquote.alert-caution p:first-child::before {
   content: '주의';
   color: #aa6666;
-}
-
-.prose blockquote.alert-tip {
-  border-left-color: #669977;
 }
 
 .prose blockquote.alert-tip p:first-child::before {

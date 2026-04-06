@@ -3,12 +3,15 @@ import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import remarkMath from 'remark-math'
 import remarkDirective from 'remark-directive'
+import remarkGfm from 'remark-gfm'
 import rehypeKatex from 'rehype-katex'
 import remarkEmbeddedMedia from './src/plugins/remark-embedded-media.mjs'
 import remarkReadingTime from './src/plugins/remark-reading-time.mjs'
 import rehypeCleanup from './src/plugins/rehype-cleanup.mjs'
 import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
 import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
+import rehypeAlerts from './src/plugins/rehype-alerts.mjs'
+import rehypeRaw from 'rehype-raw'
 import remarkTOC from './src/plugins/remark-toc.mjs'
 import remarkRelatable from './src/plugins/remark-relatable.mjs'
 import { themeConfig } from './src/config'
@@ -30,8 +33,16 @@ export default defineConfig({
       theme: 'css-variables',
       wrap: false
     },
-    remarkPlugins: [remarkMath, remarkDirective, remarkRelatable, remarkEmbeddedMedia, remarkReadingTime, remarkTOC],
-    rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode]
+    remarkPlugins: [
+      remarkGfm,
+      remarkMath,
+      remarkDirective,
+      remarkRelatable,
+      remarkEmbeddedMedia,
+      remarkReadingTime,
+      remarkTOC
+    ],
+    rehypePlugins: [rehypeKatex, rehypeAlerts, rehypeRaw, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode]
   },
   integrations: [mdx(), sitemap()],
   vite: {

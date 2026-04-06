@@ -220,6 +220,78 @@
   margin-top: 0.5em;
 }
 
+/* GitHub-style alerts/callouts */
+.prose blockquote.alert {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  padding: 0.75em 1em 0.75em 1em;
+  margin: 1em 0;
+}
+
+.prose blockquote.alert-note,
+.prose blockquote.alert-info {
+  background-color: rgba(85, 119, 187, 0.05);
+}
+
+.prose blockquote.alert-warning {
+  background-color: rgba(153, 119, 85, 0.05);
+}
+
+.prose blockquote.alert-important {
+  background-color: rgba(136, 119, 170, 0.05);
+}
+
+.prose blockquote.alert-caution {
+  background-color: rgba(170, 102, 102, 0.05);
+}
+
+.prose blockquote.alert-tip {
+  background-color: rgba(102, 153, 119, 0.05);
+}
+
+/* Alert icons */
+.prose .alert-icon {
+  width: 1.2em;
+  height: 1.2em;
+  margin-right: 0.6em;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+}
+
+.prose blockquote.alert-note .alert-icon,
+.prose blockquote.alert-info .alert-icon {
+  color: #5577bb;
+}
+
+.prose blockquote.alert-warning .alert-icon {
+  color: #997755;
+}
+
+.prose blockquote.alert-important .alert-icon {
+  color: #8877aa;
+}
+
+.prose blockquote.alert-caution .alert-icon {
+  color: #aa6666;
+}
+
+.prose blockquote.alert-tip .alert-icon {
+  color: #669977;
+}
+
+.prose blockquote.alert p {
+  margin: 0;
+  font-size: 1em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+}
+
+.prose blockquote.alert p:first-child {
+  display: flex;
+  align-items: center;
+}
+
 /* Unordered lists */
 .prose ul {
   list-style-type: none;

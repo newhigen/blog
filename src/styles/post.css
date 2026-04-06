@@ -229,41 +229,45 @@
   background-color: rgba(0, 0, 0, 0.02);
 }
 
-.prose blockquote.alert p:first-child::before {
-  margin-right: 0.5em;
-  font-size: 1.1em;
-  font-weight: normal;
+/* Alert icons */
+.prose .alert-icon {
+  width: 1.2em;
+  height: 1.2em;
+  margin-right: 0.6em;
+  vertical-align: -0.2em;
+}
+
+.prose blockquote.alert-note .alert-icon {
+  color: #5577bb;
+}
+
+.prose blockquote.alert-warning .alert-icon {
+  color: #997755;
+}
+
+.prose blockquote.alert-important .alert-icon {
+  color: #8877aa;
+}
+
+.prose blockquote.alert-caution .alert-icon {
+  color: #aa6666;
+}
+
+.prose blockquote.alert-tip .alert-icon {
+  color: #669977;
 }
 
 .prose blockquote.alert p {
   margin: 0;
   font-size: 1em;
   color: var(--text-primary);
+  display: flex;
+  align-items: center;
 }
 
-.prose blockquote.alert-note p:first-child::before {
-  content: 'ℹ';
-  color: #5577bb;
-}
-
-.prose blockquote.alert-warning p:first-child::before {
-  content: '⚠';
-  color: #997755;
-}
-
-.prose blockquote.alert-important p:first-child::before {
-  content: '⭐';
-  color: #8877aa;
-}
-
-.prose blockquote.alert-caution p:first-child::before {
-  content: '🚨';
-  color: #aa6666;
-}
-
-.prose blockquote.alert-tip p:first-child::before {
-  content: '💡';
-  color: #669977;
+.prose blockquote.alert p:first-child {
+  display: flex;
+  align-items: center;
 }
 
 /* Unordered lists */

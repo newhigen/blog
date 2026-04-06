@@ -1,15 +1,38 @@
 /**
  * rehype plugin to transform GitHub-style alert blockquotes
- * Matches: > [!WARNING], > [!NOTE], > [!TIP], > [!IMPORTANT], > [!CAUTION]
+ * Matches: > [!WARNING], > [!NOTE], > [!TIP], > [!IMPORTANT], > [!CAUTION], > [!INFO]
+ * Uses Font Awesome icon paths
  */
 
-const icons = {
-  note: '<svg class="alert-icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="10" font-weight="bold" fill="white">i</text></svg>',
-  warning: '<svg class="alert-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 20h20L12 2zm0 14h-1v1h1v-1zm0-6h-1v5h1V10z"/></svg>',
-  important: '<svg class="alert-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
-  caution: '<svg class="alert-icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" font-weight="bold" fill="white">!</text></svg>',
-  tip: '<svg class="alert-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>',
+const iconPaths = {
+  note: {
+    viewBox: '0 0 192 512',
+    path: 'M96 0C43 0 0 43 0 96s43 96 96 96 96-43 96-96-43-96-96-96zm0 128c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm32-64h-64v192h64V64z',
+  },
+  info: {
+    viewBox: '0 0 192 512',
+    path: 'M96 0C43 0 0 43 0 96s43 96 96 96 96-43 96-96-43-96-96-96zm0 128c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm32-64h-64v192h64V64z',
+  },
+  warning: {
+    viewBox: '0 0 576 512',
+    path: 'M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.6-40.025-41.577-71.987L246.423 23.985c18.467-32.009 64.72-32.009 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43-165h86v-40h-86v40z',
+  },
+  important: {
+    viewBox: '0 0 576 512',
+    path: 'M316.9 18C331.6 5.1 351.4 5 366.3 17.9l0 0 0 0 137.2 112.2c16.4 13.4 24.9 32.8 24.9 53.1V360c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V183.1c0-20.3 8.5-39.7 24.9-53.1L137.7 17.9 0 0 288 0 316.9 18zm-147.7 128l-144 144 144 144 144-144-144-144z',
+  },
+  caution: {
+    viewBox: '0 0 192 512',
+    path: 'M96 0C43 0 0 43 0 96s43 96 96 96 96-43 96-96-43-96-96-96zm0 169.3c-40.3 0-73.3 33-73.3 73.3s33 73.3 73.3 73.3 73.3-33 73.3-73.3-33-73.3-73.3-73.3zm39.5-40.3h-79V50.4h79v78.6z',
+  },
+  tip: {
+    viewBox: '0 0 384 512',
+    path: 'M272 384c9.6-31.9 29.5-59.1 49.2-82.4 20.5-24.1 48.8-50.565 48.8-84.1 0-56.6-21.3-107.6-63.7-150C289.8 37 240 0 192 0s-97.8 37-113.3 65.5C36.3 108.4 15 159.4 15 216c0 33.5 28.3 60 48.8 84.1 19.7 23.3 39.6 50.5 49.2 82.4H272zM192 512c35.3 0 64-28.7 64-64H128c0 35.3 28.7 64 64 64z',
+  },
 }
+
+const getIconPath = (type) => iconPaths[type]?.path || null
+const getViewBox = (type) => iconPaths[type]?.viewBox || null
 
 /** @param {import('hast').Root} tree */
 export default function rehypeAlerts() {
@@ -23,7 +46,7 @@ export default function rehypeAlerts() {
       const firstText = firstP.children?.[0]
       if (!firstText || firstText.type !== 'text') return
 
-      const match = firstText.value.match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/)
+      const match = firstText.value.match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION|INFO)\]/)
       if (!match) return
 
       const alertType = match[1].toLowerCase()
@@ -48,11 +71,28 @@ export default function rehypeAlerts() {
 
       // Add SVG icon as first child if paragraph still exists
       const currentFirstP = node.children?.find((c) => c.type === 'element' && c.tagName === 'p')
-      if (currentFirstP && icons[alertType]) {
-        currentFirstP.children.unshift({
-          type: 'html',
-          value: icons[alertType],
-        })
+      if (currentFirstP) {
+        const iconPath = getIconPath(alertType)
+        const viewBox = getViewBox(alertType)
+        if (iconPath && viewBox) {
+          currentFirstP.children.unshift({
+            type: 'element',
+            tagName: 'svg',
+            properties: {
+              className: ['alert-icon'],
+              viewBox: viewBox,
+              fill: 'currentColor',
+            },
+            children: [
+              {
+                type: 'element',
+                tagName: 'path',
+                properties: { d: iconPath },
+                children: [],
+              },
+            ],
+          })
+        }
       }
 
       // Add alert classes

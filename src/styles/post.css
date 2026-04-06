@@ -234,10 +234,12 @@
   width: 1.2em;
   height: 1.2em;
   margin-right: 0.6em;
-  vertical-align: -0.2em;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
 }
 
-.prose blockquote.alert-note .alert-icon {
+.prose blockquote.alert-note .alert-icon,
+.prose blockquote.alert-info .alert-icon {
   color: #5577bb;
 }
 

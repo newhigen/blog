@@ -228,6 +228,13 @@
   background: none;
 }
 
+.prose blockquote.alert p:first-child::before {
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+  margin-right: 0.5em;
+  font-size: 0.95em;
+}
+
 .prose blockquote.alert p {
   margin: 0;
   font-size: 1em;
@@ -238,20 +245,40 @@
   border-left-color: rgba(0, 0, 0, 0.2);
 }
 
+.prose blockquote.alert-note p:first-child::before {
+  content: '정보';
+}
+
 .prose blockquote.alert-warning {
   border-left-color: rgba(0, 0, 0, 0.2);
+}
+
+.prose blockquote.alert-warning p:first-child::before {
+  content: '경고';
 }
 
 .prose blockquote.alert-important {
   border-left-color: rgba(0, 0, 0, 0.2);
 }
 
+.prose blockquote.alert-important p:first-child::before {
+  content: '중요';
+}
+
 .prose blockquote.alert-caution {
   border-left-color: rgba(0, 0, 0, 0.2);
 }
 
+.prose blockquote.alert-caution p:first-child::before {
+  content: '주의';
+}
+
 .prose blockquote.alert-tip {
   border-left-color: rgba(0, 0, 0, 0.2);
+}
+
+.prose blockquote.alert-tip p:first-child::before {
+  content: '팁';
 }
 
 /* Unordered lists */

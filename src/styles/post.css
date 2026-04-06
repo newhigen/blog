@@ -222,9 +222,10 @@
 
 /* GitHub-style alerts/callouts */
 .prose blockquote.alert {
-  border-left: 2px solid;
-  padding: 0 0 0 1.375em;
-  margin: 1em 0 1em 0.125em;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 0.75em 1em 0.75em 1em;
+  margin: 1em 0;
   background: none;
 }
 

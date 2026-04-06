@@ -222,41 +222,36 @@
 
 /* GitHub-style alerts/callouts */
 .prose blockquote.alert {
-  border-left: 3px solid;
-  border-radius: 6px;
-  padding: 0.875em 1em 0.875em 1.375em;
+  border-left: 2px solid;
+  padding: 0 0 0 1.375em;
   margin: 1em 0 1em 0.125em;
-  background-color: var(--code-bg);
+  background: none;
 }
 
 .prose blockquote.alert p {
   margin: 0;
-  font-size: 0.95em;
+  font-size: 1em;
+  color: var(--text-primary);
 }
 
 .prose blockquote.alert-note {
   border-left-color: #0969da;
-  color: var(--text-primary);
 }
 
 .prose blockquote.alert-warning {
   border-left-color: #9e6a03;
-  color: var(--text-primary);
 }
 
 .prose blockquote.alert-important {
   border-left-color: #a371f7;
-  color: var(--text-primary);
 }
 
 .prose blockquote.alert-caution {
   border-left-color: #d1242f;
-  color: var(--text-primary);
 }
 
 .prose blockquote.alert-tip {
   border-left-color: #1a7f0f;
-  color: var(--text-primary);
 }
 
 /* Unordered lists */

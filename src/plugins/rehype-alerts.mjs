@@ -76,21 +76,8 @@ export default function rehypeAlerts() {
         const viewBox = getViewBox(alertType)
         if (iconPath && viewBox) {
           currentFirstP.children.unshift({
-            type: 'element',
-            tagName: 'svg',
-            properties: {
-              className: ['alert-icon'],
-              viewBox: viewBox,
-              fill: 'currentColor',
-            },
-            children: [
-              {
-                type: 'element',
-                tagName: 'path',
-                properties: { d: iconPath },
-                children: [],
-              },
-            ],
+            type: 'raw',
+            value: `<svg class="alert-icon" viewBox="${viewBox}" fill="currentColor" aria-hidden="true"><path d="${iconPath}"/></svg>`,
           })
         }
       }

@@ -11,6 +11,7 @@ import rehypeCleanup from './src/plugins/rehype-cleanup.mjs'
 import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
 import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
 import rehypeAlerts from './src/plugins/rehype-alerts.mjs'
+import rehypeRaw from 'rehype-raw'
 import remarkTOC from './src/plugins/remark-toc.mjs'
 import remarkRelatable from './src/plugins/remark-relatable.mjs'
 import { themeConfig } from './src/config'
@@ -33,7 +34,7 @@ export default defineConfig({
       wrap: false
     },
     remarkPlugins: [remarkGfm, remarkMath, remarkDirective, remarkRelatable, remarkEmbeddedMedia, remarkReadingTime, remarkTOC],
-    rehypePlugins: [rehypeKatex, rehypeAlerts, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode]
+    rehypePlugins: [rehypeKatex, rehypeAlerts, rehypeRaw, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode]
   },
   integrations: [mdx(), sitemap()],
   vite: {

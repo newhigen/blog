@@ -222,11 +222,11 @@
 
 /* GitHub-style alerts/callouts */
 .prose blockquote.alert {
-  border: 1px solid;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 4px;
   padding: 0.75em 1em 0.75em 1em;
   margin: 1em 0;
-  background: none;
+  background-color: rgba(0, 0, 0, 0.02);
 }
 
 .prose blockquote.alert p:first-child::before {
@@ -243,7 +243,7 @@
 }
 
 .prose blockquote.alert-note {
-  border-left-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
 .prose blockquote.alert-note p:first-child::before {
@@ -251,7 +251,7 @@
 }
 
 .prose blockquote.alert-warning {
-  border-left-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
 .prose blockquote.alert-warning p:first-child::before {
@@ -259,7 +259,7 @@
 }
 
 .prose blockquote.alert-important {
-  border-left-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
 .prose blockquote.alert-important p:first-child::before {
@@ -267,7 +267,7 @@
 }
 
 .prose blockquote.alert-caution {
-  border-left-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
 .prose blockquote.alert-caution p:first-child::before {
@@ -275,7 +275,7 @@
 }
 
 .prose blockquote.alert-tip {
-  border-left-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
 .prose blockquote.alert-tip p:first-child::before {

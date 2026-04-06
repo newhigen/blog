@@ -3,6 +3,7 @@ import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import remarkMath from 'remark-math'
 import remarkDirective from 'remark-directive'
+import remarkGfm from 'remark-gfm'
 import rehypeKatex from 'rehype-katex'
 import remarkEmbeddedMedia from './src/plugins/remark-embedded-media.mjs'
 import remarkReadingTime from './src/plugins/remark-reading-time.mjs'
@@ -30,7 +31,7 @@ export default defineConfig({
       theme: 'css-variables',
       wrap: false
     },
-    remarkPlugins: [remarkMath, remarkDirective, remarkRelatable, remarkEmbeddedMedia, remarkReadingTime, remarkTOC],
+    remarkPlugins: [remarkGfm, remarkMath, remarkDirective, remarkRelatable, remarkEmbeddedMedia, remarkReadingTime, remarkTOC],
     rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode]
   },
   integrations: [mdx(), sitemap()],

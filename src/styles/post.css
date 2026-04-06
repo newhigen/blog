@@ -226,7 +226,27 @@
   border-radius: 4px;
   padding: 0.75em 1em 0.75em 1em;
   margin: 1em 0;
-  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.prose blockquote.alert-note,
+.prose blockquote.alert-info {
+  background-color: rgba(85, 119, 187, 0.05);
+}
+
+.prose blockquote.alert-warning {
+  background-color: rgba(153, 119, 85, 0.05);
+}
+
+.prose blockquote.alert-important {
+  background-color: rgba(136, 119, 170, 0.05);
+}
+
+.prose blockquote.alert-caution {
+  background-color: rgba(170, 102, 102, 0.05);
+}
+
+.prose blockquote.alert-tip {
+  background-color: rgba(102, 153, 119, 0.05);
 }
 
 /* Alert icons */

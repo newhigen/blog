@@ -26,6 +26,9 @@ pnpm-lock.yaml
 coverage/
 .obsidian/
 
+# Templater files (preserve syntax)
+src/Blog/templater/
+
 # Media files
 *.png
 *.jpg

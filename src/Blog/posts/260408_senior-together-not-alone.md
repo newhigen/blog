@@ -8,7 +8,7 @@ tags:
   - 100일글쓰기챌린지
   - 일
 description: ''
-category:
+category: 일
 ---
 
 # 한 줄 요약

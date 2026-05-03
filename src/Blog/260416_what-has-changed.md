@@ -1,6 +1,6 @@
 ---
 pubDate: 2029-99-99
-title: 무엇이 달라진걸까
+title: 무엇이 달라진 걸까
 slug: what-has-changed
 featured: false
 draft: false

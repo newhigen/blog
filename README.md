@@ -6,13 +6,17 @@
 
 ## Preview
 
-### 홈
+| 홈 | 포스트 |
+|:---:|:---:|
+| <img src="docs/screenshots/home.png" width="500"> | <img src="docs/screenshots/post-detail.png" width="500"> |
 
-![홈페이지](docs/screenshots/home.png)
+### 히트맵
 
-### 포스트
+<img src="docs/screenshots/heatmap.png" width="300">
 
-![포스트 상세](docs/screenshots/post-detail.png)
+독서 기록과 글쓰기 활동을 시각화합니다. 셀에 마우스를 올리면 해당 월에 읽은 책 목록이 표시됩니다.
+
+<img src="docs/screenshots/heatmap-hover.png" width="250">
 
 ## Writing
 
@@ -20,5 +24,3 @@
 |---------|------|
 | 책 | 서평과 독서 노트 |
 | 생각 | 개인 에세이와 사유 |
-| 개발 | 소프트웨어 엔지니어링 이야기 |
-| 100일글쓰기챌린지 | 매일 글쓰기 연습 기록 |

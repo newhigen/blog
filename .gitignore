@@ -31,3 +31,6 @@ pnpm-debug.log*
 
 # OMC session state
 .omc/
+
+# Playwright MCP temp files
+.playwright-mcp/

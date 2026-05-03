@@ -1,5 +1,5 @@
 ---
-pubDate: 2029-99-99
+pubDate: '{{date:YYYY-MM-DD}}'
 title: default
 slug: default
 featured: false

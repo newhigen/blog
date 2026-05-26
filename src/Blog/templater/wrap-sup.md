@@ -1,1 +1,0 @@
-<%* tR += `<sup>${tp.file.selection()}</sup>` %>

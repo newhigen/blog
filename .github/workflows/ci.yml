@@ -48,7 +48,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile --prefer-offline --allow-build @parcel/watcher esbuild sharp
+        run: pnpm install --prefer-offline --allow-build @parcel/watcher esbuild sharp
 
       - name: Format check
         run: pnpm format:check

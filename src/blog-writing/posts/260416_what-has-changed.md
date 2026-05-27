@@ -1,5 +1,5 @@
 ---
-pubDate: 2029-99-99
+pubDate: 2026-04-16
 title: 무엇이 달라진 걸까
 slug: what-has-changed
 featured: false

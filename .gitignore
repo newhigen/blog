@@ -34,3 +34,9 @@ pnpm-debug.log*
 
 # Playwright MCP temp files
 .playwright-mcp/
+
+# Claude state
+.claude/
+
+# Obsidian config (per-vault)
+.obsidian/

@@ -48,7 +48,7 @@ export default defineConfig({
   vite: {
     server: {
       middlewareMode: false,
-      allowedHosts: ['mamie-nonbiological-incontrollably.ngrok-free.dev', 'localhost', '127.0.0.1']
+      allowedHosts: ['mamie-nonbiological-incontrollably.ngrok-free.dev', 'localhost', '127.0.0.1', '.ts.net']
     },
     resolve: {
       alias: {

@@ -1,5 +1,5 @@
 ---
-pubDate: 2026-06-03
+pubDate: 2026-06-10
 title: 더 기버 1
 slug: the-go-giver-1
 featured: false

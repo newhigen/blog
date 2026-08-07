@@ -3,10 +3,10 @@ import type { ThemeConfig } from './types'
 export const themeConfig: ThemeConfig = {
   // SITE INFO ///////////////////////////////////////////////////////////////////////////////////////////
   site: {
-    website: 'https://sungd.uk/', // Site domain
+    website: 'https://writing.sungd.uk/', // Site domain
     title: 'sungduk', // Site title
     author: 'sungduk', // Author name
-    description: '읽은 것들을, 그리고 생각도 글로 씁니다.', // Site description
+    description: '읽은 것들을, 생각을, 만들면서 알게 된 것을 글로 씁니다.', // Site description
     language: 'ko-kr' // Default language
   },
 

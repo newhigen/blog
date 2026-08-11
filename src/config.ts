@@ -33,6 +33,6 @@ export const themeConfig: ThemeConfig = {
     toc: true, // Show table of contents (when there is enough page width)
     imageViewer: true, // Enable image viewer
     copyCode: true, // Enable copy button in code blocks
-    linkCard: true // Enable link card
+    linkCard: false // 링크 카드는 서버 라우트가 필요한데 GitHub Pages 는 정적만 서빙한다
   }
 }

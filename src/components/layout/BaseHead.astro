@@ -55,4 +55,9 @@ const imageUrl = ogImage ? new URL(ogImage, Astro.url) : new URL('/og/chiri-og.p
   }
   gtag('js', new Date())
   gtag('config', 'G-1LV633QRNR')
+  gtag('config', 'G-5LN80GCB37')
+  document.addEventListener('astro:page-load', () => {
+    gtag('config', 'G-1LV633QRNR', { page_path: window.location.pathname })
+    gtag('config', 'G-5LN80GCB37', { page_path: window.location.pathname })
+  })
 </script>

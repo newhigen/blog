@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://astro-chiri.pages.dev/sitemap-index.xml
+Sitemap: https://writing.sungd.uk/sitemap-index.xml
